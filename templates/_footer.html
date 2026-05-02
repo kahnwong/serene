@@ -1,6 +1,16 @@
 {% if config.extra.blog_section_path is defined %}
 {% set blog_section_path = config.extra.blog_section_path %}
 {% endif %}
+{% if page is defined %}
+{% set current_path = page.path %}
+{% else %}
+{% set current_path = section.path %}
+{% endif %}
+{% if blog_section_path is defined and current_path is starting_with(blog_section_path) %}
+{% set rss_section_path = blog_section_path %}
+{% elif current_path is starting_with("/microblog") %}
+{% set rss_section_path = "/microblog" %}
+{% endif %}
 <footer>
   <div class="left">
     <div class="copyright">
@@ -13,9 +23,9 @@
   </div>
 
   <div class="right">
-    {% if blog_section_path is defined and section.path is starting_with(blog_section_path) %}
+    {% if rss_section_path is defined %}
     {% if section.generate_feeds %}
-      {% set_global rss_path = blog_section_path ~ "/" ~ config.feed_filenames.0 %}
+      {% set_global rss_path = rss_section_path ~ "/" ~ config.feed_filenames.0 %}
     {% elif config.generate_feeds %}
       {% set_global rss_path = "/" ~ config.feed_filenames.0 %}
     {% endif %}
@@ -35,7 +45,7 @@
   </div>
 </footer>
 
-{% if blog_section_path is defined and section.path is starting_with(blog_section_path) %}
+{% if rss_section_path is defined %}
 {% if section.generate_feeds or config.generate_feeds %}
 {% set link = get_url(path=rss_path) %}
 <dialog id="rss-mask">
