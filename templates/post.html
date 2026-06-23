@@ -1,4 +1,5 @@
 {% import "macros/prose.html" as macros %}
+{% import "macros/social.html" as social %}
 {% extends "_base.html" %}
 
 {% block page %}post{% endblock page %}
@@ -24,17 +25,8 @@
 
 {% block head %}
 {%- set card_slug = page.path | trim_start_matches(pat="/") | trim_end_matches(pat="/") | replace(from="/", to="-") -%}
-{%- set card_url = get_url(path="social-cards/" ~ card_slug ~ ".png") -%}
 {%- if page.summary %}{% set og_desc = page.summary %}{% elif page.description %}{% set og_desc = page.description %}{% else %}{% set og_desc = config.description %}{% endif -%}
-<meta property="og:type" content="article">
-<meta property="og:title" content="{{ page.title }}">
-<meta property="og:description" content="{{ og_desc }}">
-<meta property="og:url" content="{{ page.permalink }}">
-<meta property="og:image" content="{{ card_url }}">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{{ page.title }}">
-<meta name="twitter:description" content="{{ og_desc }}">
-<meta name="twitter:image" content="{{ card_url }}">
+{{ social::card(title=page.title, desc=og_desc, url=page.permalink, slug=card_slug, kind="article") }}
 {% if config.markdown.highlighting.style == "class" %}
 <link id="hl" rel="stylesheet" type="text/css" href="/giallo-{% if config.extra.force_theme == "dark" %}dark{% else %}light{% endif %}.css" />
 {% endif %}

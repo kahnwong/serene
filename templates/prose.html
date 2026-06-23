@@ -1,4 +1,5 @@
 {% import "macros/prose.html" as macros %}
+{% import "macros/social.html" as social %}
 {% extends "_base.html" %}
 
 {% block page %}prose-page{% endblock page %}
@@ -16,6 +17,8 @@
 {% endblock desc %}
 
 {% block head %}
+{%- set card_slug = section.path | trim_start_matches(pat="/") | trim_end_matches(pat="/") | replace(from="/", to="-") -%}
+{{ social::card(title=section.title, desc=section.description | default(value=config.description), url=section.permalink, slug=card_slug, kind="website") }}
 {% if config.markdown.highlighting.style == "class" %}
 <link id="hl" rel="stylesheet" type="text/css" href="/giallo-{% if config.extra.force_theme == "dark" %}dark{% else %}light{% endif %}.css" />
 {% endif %}

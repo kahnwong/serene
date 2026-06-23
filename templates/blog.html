@@ -1,4 +1,5 @@
 {% import "macros/prose.html" as macros %}
+{% import "macros/social.html" as social %}
 {% extends "_base.html" %}
 
 {% block page %}blog{% endblock page%}
@@ -12,6 +13,11 @@
   {% endif %}
   <meta name="description" content="{{ desc }}">
 {% endblock desc %}
+
+{% block head %}
+{%- set card_slug = section.path | trim_start_matches(pat="/") | trim_end_matches(pat="/") | replace(from="/", to="-") -%}
+{{ social::card(title=section.title, desc=section.description | default(value=config.description), url=section.permalink, slug=card_slug, kind="website") }}
+{% endblock head %}
 
 {% block content %}
 <div id="wrapper">

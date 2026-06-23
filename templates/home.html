@@ -1,3 +1,4 @@
+{% import "macros/social.html" as social %}
 {% extends "_base.html" %}
 
 {% block page %}homepage{% endblock page%}
@@ -8,6 +9,7 @@
 {% endblock desc %}
 
 {% block head %}
+{{ social::card(title=config.title, desc=config.description, url=get_url(path="/"), slug="index", kind="website") }}
 {% if config.markdown.highlighting.style == "class" %}
   {% if config.extra.force_theme == "dark" %}
     <link id="hl" rel="stylesheet" type="text/css" href="{{ get_url(path='giallo-dark.css') }}" />
