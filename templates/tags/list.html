@@ -1,4 +1,5 @@
 {% import "macros/prose.html" as macros %}
+{% import "macros/social.html" as social %}
 {% import "macros/seo.html" as seo %}
 {% extends "_base.html" %}
 
@@ -22,6 +23,10 @@
   ) }}
 {% endblock desc %}
 
+{% block head %}
+{{ social::card(title="Tags", desc="Tags", url=get_url(path="/tags"), slug="tags", kind="website") }}
+{% endblock head %}
+
 {% block content %}
 <div id="wrapper">
   {{ macros::back_link(path = get_url(path="/")) }}
@@ -36,3 +41,4 @@
   {% include "_footer.html" %}
 </div>
 {% endblock content %}
+
