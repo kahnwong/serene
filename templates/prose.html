@@ -21,7 +21,7 @@
 
 {% block head %}
 {% if config.markdown.highlighting.style == "class" %}
-<link id="hl" rel="stylesheet" type="text/css" href="/giallo-{% if config.extra.force_theme == "dark" %}dark{% else %}light{% endif %}.css" />
+<link id="hl" rel="stylesheet" type="text/css" href="/giallo-{% if color_scheme == "dark" %}dark{% else %}light{% endif %}.css" />
 {% endif %}
 {% set enable_math = section.extra.math if section.extra.math is defined else (config.extra.math if config.extra.math is defined else false) %}
 {% if enable_math %}
@@ -51,7 +51,7 @@
     {{ <back_link path={get_url(path="/")} config /> }}
     {% include "_section_title.html" %}
     <div>
-      {% set allow_copy = section.extra.copy if section.extra.copy is defined else (config.extra.copy if config.extra.copy is defined else false) %}
+      {% set allow_copy = section.extra.code_copy if section.extra.code_copy is defined else (config.extra.code_copy if config.extra.code_copy is defined else false) %}
       {% if allow_copy %}
       {% set copy_icon = load_data(path="icon/copy.svg") %}
       {% set check_icon = load_data(path="icon/check.svg") %}

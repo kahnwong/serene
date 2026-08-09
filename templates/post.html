@@ -33,7 +33,7 @@
 
 {% block head %}
 {% if config.markdown.highlighting.style == "class" %}
-<link id="hl" rel="stylesheet" type="text/css" href="/giallo-{% if config.extra.force_theme == "dark" %}dark{% else %}light{% endif %}.css" />
+<link id="hl" rel="stylesheet" type="text/css" href="/giallo-{% if color_scheme == "dark" %}dark{% else %}light{% endif %}.css" />
 {% endif %}
 {% set enable_math = page.extra.math if page.extra.math is defined else (section.extra.math if section.extra.math is defined else (config.extra.math if config.extra.math is defined else false)) %}
 {% if enable_math %}
@@ -93,7 +93,7 @@
     {{ <back_link path={get_url(path=section.path)} config /> }}
 
     <div>
-      {% set allow_copy = page.extra.copy if page.extra.copy is defined else (section.extra.copy if section.extra.copy is defined else (config.extra.copy if config.extra.copy is defined else false)) %}
+      {% set allow_copy = page.extra.code_copy if page.extra.code_copy is defined else (section.extra.code_copy if section.extra.code_copy is defined else (config.extra.code_copy if config.extra.code_copy is defined else false)) %}
       {% if allow_copy %}
       {% set copy_icon = load_data(path="icon/copy.svg") %}
       {% set check_icon = load_data(path="icon/check.svg") %}
@@ -119,15 +119,15 @@
           {% endif %}
         </div>
 
-        {% set show_outdate_alert = page.extra.outdate_alert if page.extra.outdate_alert is defined else (section.extra.outdate_alert if section.extra.outdate_alert is defined else (config.extra.outdate_alert if config.extra.outdate_alert is defined else false)) %}
-        {% set outdate_alert_days = page.extra.outdate_alert_days if page.extra.outdate_alert_days is defined else (section.extra.outdate_alert_days if section.extra.outdate_alert_days is defined else (config.extra.outdate_alert_days if config.extra.outdate_alert_days is defined else 120)) %}
+        {% set show_outdated_alert = page.extra.outdated_alert if page.extra.outdated_alert is defined else (section.extra.outdated_alert if section.extra.outdated_alert is defined else (config.extra.outdated_alert if config.extra.outdated_alert is defined else false)) %}
+        {% set outdated_alert_days = page.extra.outdated_alert_days if page.extra.outdated_alert_days is defined else (section.extra.outdated_alert_days if section.extra.outdated_alert_days is defined else (config.extra.outdated_alert_days if config.extra.outdated_alert_days is defined else 120)) %}
 
-        {% if show_outdate_alert -%}
-        {% set outdate_alert_text_before = section.extra.outdate_alert_text_before if section.extra.outdate_alert_text_before is defined else (config.extra.outdate_alert_text_before if config.extra.outdate_alert_text_before is defined else "") %}
-        {% set outdate_alert_text_after = section.extra.outdate_alert_text_after if section.extra.outdate_alert_text_after is defined else (config.extra.outdate_alert_text_after if config.extra.outdate_alert_text_after is defined else "") %}
-        <blockquote id="outdate_alert" class="callout caution hidden" data-days="{{ outdate_alert_days }}"
-          data-alert-text-before="{{ outdate_alert_text_before }}"
-          data-alert-text-after="{{ outdate_alert_text_after }}">
+        {% if show_outdated_alert -%}
+        {% set outdated_alert_text_before = section.extra.outdated_alert_text_before if section.extra.outdated_alert_text_before is defined else (config.extra.outdated_alert_text_before if config.extra.outdated_alert_text_before is defined else "") %}
+        {% set outdated_alert_text_after = section.extra.outdated_alert_text_after if section.extra.outdated_alert_text_after is defined else (config.extra.outdated_alert_text_after if config.extra.outdated_alert_text_after is defined else "") %}
+        <blockquote id="outdate_alert" class="callout caution hidden" data-days="{{ outdated_alert_days }}"
+          data-alert-text-before="{{ outdated_alert_text_before }}"
+          data-alert-text-after="{{ outdated_alert_text_after }}">
           <div class="content"></div>
         </blockquote>
         {% endif %}

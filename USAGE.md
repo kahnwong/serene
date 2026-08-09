@@ -33,9 +33,9 @@ lang = 'en'
 # Show footer in home page
 footer = false
 
-# If you don't want to display id/bio/avatar, simply comment out that line
+# If you don't want to display handle/bio/avatar, simply comment out that line
 name = "Jhon Wick"
-id = "jhonwick"
+handle = "jhonwick"
 bio = "dog person, killer"
 avatar = "img/avatar.webp"
 links = [
@@ -77,7 +77,7 @@ back_to_top = true # show back-to-top button
 +++
 ```
 
-Display options like `toc` / `copy` / `comment` / `date_format` have site-wide defaults in `config.toml`, you can override them here for this section (e.g. `toc = false`), see [Front Matter](#front-matter) for details.
+Display options like `toc` / `code_copy` / `comment` / `date_format` have site-wide defaults in `config.toml`, you can override them here for this section (e.g. `toc = false`), see [Front Matter](#front-matter) for details.
 
 Blog section is defined by `posts.html` and `post.html`. Serene also has a special template called `prose.html`, it applies the same styles of blog post page. You can use it as a section template for a custom section page, for example if you want a separate `about` page, you can add a `{ name = "about", path = "/about", is_external = false }` to the `sections` and create a `myblog/content/about/_index.md`:
 
@@ -152,7 +152,7 @@ The default icons mostly came from [Remix Icon](https://remixicon.com/).
 
 ## Theme
 
-By default there is theme toggle button to switch between light and dark mode, you can set `force_theme` in `config.toml` to force a specific mode only.
+The `color_scheme` option in `config.toml` controls the light/dark mode behavior: `"auto"` (default) follows the visitor's system preference and shows a theme toggle button, while `"light"` / `"dark"` locks the site to a single mode and hides the button.
 
 ## RSS
 
@@ -212,9 +212,9 @@ tags = ["one", "two", "three"]
 lang = "en"
 toc = true
 comment = false
-copy = true
-outdate_alert = true
-outdate_alert_days = 120
+code_copy = true
+outdated_alert = true
+outdated_alert_days = 120
 math = false
 mermaid = false
 featured = false
@@ -225,7 +225,7 @@ og_image = "cover.png"
 new post about something...
 ```
 
-Display options follow a unified fallback chain: **post front-matter → the post's section `_index.md` → `[extra]` of `config.toml`**, the closest one wins. This applies to `toc`, `copy`, `comment`, `math`, `mermaid`, `reaction`, `outdate_alert` and `outdate_alert_days` (`date_format` and `outdate_alert_text_before/after` follow a section → config chain). So you can set site-wide defaults in `config.toml`, override them per section, and override again per post.
+Display options follow a unified fallback chain: **post front-matter → the post's section `_index.md` → `[extra]` of `config.toml`**, the closest one wins. This applies to `toc`, `code_copy`, `comment`, `math`, `mermaid`, `reaction`, `outdated_alert` and `outdated_alert_days` (`date_format` and `outdated_alert_text_before/after` follow a section → config chain). So you can set site-wide defaults in `config.toml`, override them per section, and override again per post.
 
 If you set `categorized = true`, posts will be sorted alphabetically by default, you can manually set the order by adding a prefix  `__[0-9]{2}__` in front of the category name, for example, `categories = ["__01__CatXXX"]`
 
@@ -243,19 +243,19 @@ Set `mermaid = true` to enable chart rendering with Mermaid.
 
 Set `featured = true` to display an asterisk(*) mark in front of the title.
 
-## Outdate Alert
+## Outdated Alert
 
-If one of your posts has strong timeliness, you can display an outdate alert after certain days.
+If one of your posts has strong timeliness, you can display an outdated alert after certain days.
 
-Set `outdate_alert` and `outdate_alert_days` to enable the alert.
+Set `outdated_alert` and `outdated_alert_days` to enable the alert.
 
-Options `outdate_alert_text_before` and `outdate_alert_text_after` are the text content of the alert, they can be set in `[extra]` of `config.toml`, or per section in its `_index.md`.
+Options `outdated_alert_text_before` and `outdated_alert_text_after` are the text content of the alert, they can be set in `[extra]` of `config.toml`, or per section in its `_index.md`.
 
 ## Comment
 
 You can use [giscus](https://giscus.app) as the comment system.
 
-To enable it, you need to create `myblog/templates/_giscus_script.html` and put the script configured on the giscus website into it, then change the value of `data-theme` to `https://<your-domain-name>/giscus_light.css`, replace `<your-domain-name>` with you domain name, same as `base_url` in `config.toml`, if you set `force_theme` to `dark`, replace `giscus_light.css` with `giscus_dark.css`.
+To enable it, you need to create `myblog/templates/_giscus_script.html` and put the script configured on the giscus website into it, then change the value of `data-theme` to `https://<your-domain-name>/giscus_light.css`, replace `<your-domain-name>` with you domain name, same as `base_url` in `config.toml`, if you set `color_scheme` to `"dark"`, replace `giscus_light.css` with `giscus_dark.css`.
 
 Then set `comment = true` to enable comment.
 

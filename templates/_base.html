@@ -1,3 +1,4 @@
+{% set color_scheme = config.extra.color_scheme if config.extra.color_scheme is defined else "auto" %}
 <!DOCTYPE html>
 
 <html lang="{% block lang %}{% endblock lang %}">
@@ -18,8 +19,8 @@
   {% include "_head_extend.html" %}
 </head>
 
-<body class="{% block page %}{% endblock page%}{% if config.extra.force_theme == "dark" %} dark{% endif %}">
-  {% if not config.extra.force_theme %}
+<body class="{% block page %}{% endblock page%}{% if color_scheme == "dark" %} dark{% endif %}">
+  {% if color_scheme == "auto" %}
   <script>
     const theme = sessionStorage.getItem('theme');
     const match = window.matchMedia("(prefers-color-scheme: dark)").matches;

@@ -48,7 +48,7 @@ sections = [
 blog_section_path = "/posts" # Path of the main blog section, used by home page's recent posts and tags pages
 
 back_link_text = "Back" # Text of the back button
-force_theme = false # false | "light" | "dark"
+color_scheme = "auto" # "auto" | "light" | "dark"
 
 # og_image = "img/og.png" # The default image for social media sharing (Open Graph), a path in static folder or a full URL
 
@@ -61,14 +61,14 @@ not_found_recover_text = "« back to home »"
 # Site-wide default values of display options, can be overridden in a section's `_index.md`, and again in a post's front-matter
 date_format = "%b %-d, %Y"
 toc = true # show table-of-contents
-copy = true # show copy button in code block
+code_copy = true # show copy button in code block
 comment = false # enable comment
 math = false # enable formula rendering with KaTeX
 mermaid = false # enable chart rendering with Mermaid
-outdate_alert = false # show outdate alert after certain days
-outdate_alert_days = 120
-outdate_alert_text_before = "This article was last updated "
-outdate_alert_text_after = " days ago and may be out of date."
+outdated_alert = false # show outdate alert after certain days
+outdated_alert_days = 120
+outdated_alert_text_before = "This article was last updated "
+outdated_alert_text_after = " days ago and may be out of date."
 
 reaction = false # Whether to enable anonymous emoji reactions (Note: You need to set up a working api endpoint to enable this feature)
 reaction_align = "right" # "left" | "center" | "right"
