@@ -49,7 +49,6 @@ links = [
 recent = false
 recent_max = 15
 recent_more_text = "more »"
-date_format = "%b %-d, %Y"
 +++
 
 Hi, I'm ...
@@ -73,20 +72,12 @@ lang = "en"
 title = "Posts"
 subtitle = "I write about ...."
 
-date_format = "%b %-d, %Y"
-
 categorized = false # posts can be categorized
 back_to_top = true # show back-to-top button
-toc = true # show table-of-contents
-comment = false # enable comment
-copy = true # show copy button in code block
-
-outdate_alert = false
-outdate_alert_days = 12
-outdate_alert_text_before = "This article was last updated "
-outdate_alert_text_after = " days ago and may be out of date."
 +++
 ```
+
+Display options like `toc` / `copy` / `comment` / `date_format` have site-wide defaults in `config.toml`, you can override them here for this section (e.g. `toc = false`), see [Front Matter](#front-matter) for details.
 
 Blog section is defined by `posts.html` and `post.html`. Serene also has a special template called `prose.html`, it applies the same styles of blog post page. You can use it as a section template for a custom section page, for example if you want a separate `about` page, you can add a `{ name = "about", path = "/about", is_external = false }` to the `sections` and create a `myblog/content/about/_index.md`:
 
@@ -100,14 +91,8 @@ insert_anchor_links = "none"
 [extra]
 lang = 'en'
 
-title = "Posts"
-subtitle = "I write about ...."
-
-math = false
-mermaid = false
-copy = false
-comment = false
-reaction = false
+title = "About"
+subtitle = "About this site"
 +++
 
 Hi, My name is ....
@@ -240,7 +225,7 @@ og_image = "cover.png"
 new post about something...
 ```
 
-Some of these options can also be configured in `myblog/content/posts/_index.md`, as the default value for all posts.
+Display options follow a unified fallback chain: **post front-matter → the post's section `_index.md` → `[extra]` of `config.toml`**, the closest one wins. This applies to `toc`, `copy`, `comment`, `math`, `mermaid`, `reaction`, `outdate_alert` and `outdate_alert_days` (`date_format` and `outdate_alert_text_before/after` follow a section → config chain). So you can set site-wide defaults in `config.toml`, override them per section, and override again per post.
 
 If you set `categorized = true`, posts will be sorted alphabetically by default, you can manually set the order by adding a prefix  `__[0-9]{2}__` in front of the category name, for example, `categories = ["__01__CatXXX"]`
 
@@ -264,7 +249,7 @@ If one of your posts has strong timeliness, you can display an outdate alert aft
 
 Set `outdate_alert` and `outdate_alert_days` to enable the alert.
 
-In `myblog/content/posts/_index.md`, options `outdate_alert_text_before` and `outdate_alert_text_after` are the text content of the alert.
+Options `outdate_alert_text_before` and `outdate_alert_text_after` are the text content of the alert, they can be set in `[extra]` of `config.toml`, or per section in its `_index.md`.
 
 ## Comment
 

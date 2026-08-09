@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - feat: tag links are now generated via zola's taxonomy API instead of hardcoded `/tags/` paths, so the `taxonomy_root` config option (e.g. `taxonomy_root = "blog"` for `/blog/tags/xxx` URLs) is respected
 - feat: support multiple blog-like list sections — post pages now read config from their own parent section instead of the `blog_section_path` one, and each list section can have its own feed (`generate_feeds = true` in its `_index.md`); `blog_section_path` now only designates the main section used by the home page's recent posts and the tags pages
 - refactor: `blog.html` template is renamed to `posts.html`, change `template = "blog.html"` to `template = "posts.html"` in your blog section's `_index.md`
+- feat: display options (`toc` / `copy` / `comment` / `math` / `mermaid` / `reaction` / `outdate_alert` / `date_format`, etc.) now follow a unified fallback chain: post front-matter → section `_index.md` → `[extra]` of `config.toml`, the closest one wins — notably `math` / `mermaid` can now be enabled for a whole section, and site-wide defaults can be set in `config.toml`
 
 ### Migrate from zola v0.22
 

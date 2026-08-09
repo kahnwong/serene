@@ -22,6 +22,7 @@
   {{ <back_link path={get_url(path="/")} config /> }}
   {% include "_section_title.html" %}
   <main class="layout-list">
+    {% set date_format = section.extra.date_format if section.extra.date_format is defined else (config.extra.date_format if config.extra.date_format is defined else "%b %-d, %Y") %}
     {% if section.extra.categorized %}
     {% set categorized_posts = [post for post in section.pages if post.taxonomies?.categories] %}
     {% set categories = [post.taxonomies.categories[0] for post in categorized_posts] | unique | sort %}
@@ -36,7 +37,7 @@
       {% for post in posts %}
       <a class="post instant {% if post.extra.featured %}featured{% endif %}" href="{{ post.permalink }}">
         <span>{{ post.title }}</span>
-        <span class="date">{{ post.date | date(format=section.extra.date_format) }}</span>
+        <span class="date">{{ post.date | date(format=date_format) }}</span>
       </a>
       {% endfor %}
     </div>
@@ -46,7 +47,7 @@
       {% for post in section.pages %}
       <a class="post instant {% if post.extra.featured %}featured{% endif %}" href="{{ post.permalink }}">
         <span>{{ post.title }}</span>
-        <span class="date">{{ post.date | date(format=section.extra.date_format) }}</span>
+        <span class="date">{{ post.date | date(format=date_format) }}</span>
       </a>
       {% endfor %}
     </div>

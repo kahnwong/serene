@@ -28,10 +28,11 @@
       <span># {{ term.name }}</span>
     </div>
     <div class="post-list">
+      {% set date_format = section.extra.date_format if section.extra.date_format is defined else (config.extra.date_format if config.extra.date_format is defined else "%b %-d, %Y") %}
       {% for post in term.pages %}
       <a class="post instant {% if post.extra.featured %}featured{% endif %}" href="{{ post.permalink }}">
         <span>{{ post.title }}</span>
-        <span class="date">{{ post.date | date(format=section.extra.date_format) }}</span>
+        <span class="date">{{ post.date | date(format=date_format) }}</span>
       </a>
       {% endfor %}
     </div>

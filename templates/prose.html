@@ -23,7 +23,8 @@
 {% if config.markdown.highlighting.style == "class" %}
 <link id="hl" rel="stylesheet" type="text/css" href="/giallo-{% if config.extra.force_theme == "dark" %}dark{% else %}light{% endif %}.css" />
 {% endif %}
-{% if section.extra.math %}
+{% set enable_math = section.extra.math if section.extra.math is defined else (config.extra.math if config.extra.math is defined else false) %}
+{% if enable_math %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
@@ -50,7 +51,8 @@
     {{ <back_link path={get_url(path="/")} config /> }}
     {% include "_section_title.html" %}
     <div>
-      {% if section.extra.copy %}
+      {% set allow_copy = section.extra.copy if section.extra.copy is defined else (config.extra.copy if config.extra.copy is defined else false) %}
+      {% if allow_copy %}
       {% set copy_icon = load_data(path="icon/copy.svg") %}
       {% set check_icon = load_data(path="icon/check.svg") %}
       <div id="copy-cfg" style="display: none;" data-copy-icon="{{ copy_icon }}" data-check-icon="{{ check_icon }}"></div>
@@ -59,12 +61,13 @@
         {{ section.content | safe }}
       </article>
 
-      {% if section.extra.reaction is defined %}{% set show_reaction = section.extra.reaction %}{% else %}{% set show_reaction = config.extra.reaction %}{% endif %}
+      {% set show_reaction = section.extra.reaction if section.extra.reaction is defined else (config.extra.reaction if config.extra.reaction is defined else false) %}
       {% if show_reaction %}
       <div class="reaction {{ config.extra.reaction_align }}" data-endpoint="{{ config.extra.reaction_endpoint }}"></div>
       {% endif %}
 
-      {% if section.extra.comment %}
+      {% set show_comment = section.extra.comment if section.extra.comment is defined else (config.extra.comment if config.extra.comment is defined else false) %}
+      {% if show_comment %}
       <div class="giscus"></div>
       {% include "_giscus_script.html" %}
       {% endif %}
@@ -77,7 +80,8 @@
 
 {% block script %}
 <script src="/js/lightense.min.js"></script>
-{% if section.extra.mermaid %}
+{% set enable_mermaid = section.extra.mermaid if section.extra.mermaid is defined else (config.extra.mermaid if config.extra.mermaid is defined else false) %}
+{% if enable_mermaid %}
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
   mermaid.initialize({ startOnLoad: true });

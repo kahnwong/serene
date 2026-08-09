@@ -20,7 +20,8 @@
     <link id="hl" rel="stylesheet" type="text/css" href="{{ get_url(path='giallo-light.css') }}" />
   {% endif %}
 {% endif %}
-{% if section.extra.math %}
+{% set enable_math = section.extra.math if section.extra.math is defined else (config.extra.math if config.extra.math is defined else false) %}
+{% if enable_math %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
@@ -91,12 +92,13 @@
     {% set blog_section_path = config.extra.blog_section_path | trim_start(pat="/") %}
     {% set section_md_path = blog_section_path ~ "/_index.md" %}
     {% set blog_section = get_section(path=section_md_path) %}
+    {% set date_format = section.extra.date_format if section.extra.date_format is defined else (config.extra.date_format if config.extra.date_format is defined else "%b %-d, %Y") %}
     <section class="layout-list">
       <div class="post-list">
         {% for post in blog_section.pages[:section.extra.recent_max] %}
         <a class="post instant {% if post.extra.featured %}featured{% endif %}" href="{{ post.permalink }}">
           <span>{{ post.title }}</span>
-          <span class="date">{{ post.date | date(format=section.extra.date_format) }}</span>
+          <span class="date">{{ post.date | date(format=date_format) }}</span>
         </a>
         {% endfor %}
       </div>
@@ -114,7 +116,8 @@
 
 {% block script %}
 <script src="{{ get_url(path='js/lightense.min.js') }}"></script>
-{% if section.extra.mermaid %}
+{% set enable_mermaid = section.extra.mermaid if section.extra.mermaid is defined else (config.extra.mermaid if config.extra.mermaid is defined else false) %}
+{% if enable_mermaid %}
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
   mermaid.initialize({ startOnLoad: true });

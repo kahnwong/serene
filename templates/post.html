@@ -35,7 +35,8 @@
 {% if config.markdown.highlighting.style == "class" %}
 <link id="hl" rel="stylesheet" type="text/css" href="/giallo-{% if config.extra.force_theme == "dark" %}dark{% else %}light{% endif %}.css" />
 {% endif %}
-{% if page.extra.math %}
+{% set enable_math = page.extra.math if page.extra.math is defined else (section.extra.math if section.extra.math is defined else (config.extra.math if config.extra.math is defined else false)) %}
+{% if enable_math %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
@@ -60,7 +61,7 @@
 <div id="wrapper">
   <div id="blank"></div>
   <aside>
-    {% if page.extra.toc is defined %}{% set show_toc = page.extra.toc %}{% else %}{% set show_toc = section.extra.toc %}{% endif %}
+    {% set show_toc = page.extra.toc if page.extra.toc is defined else (section.extra.toc if section.extra.toc is defined else (config.extra.toc if config.extra.toc is defined else false)) %}
     {% if show_toc and page.toc %}
     <nav>
       <ul>
@@ -92,7 +93,7 @@
     {{ <back_link path={get_url(path=section.path)} config /> }}
 
     <div>
-      {% if page.extra.copy is defined %}{% set allow_copy = page.extra.copy %}{% else %}{% set allow_copy = section.extra.copy %}{% endif %}
+      {% set allow_copy = page.extra.copy if page.extra.copy is defined else (section.extra.copy if section.extra.copy is defined else (config.extra.copy if config.extra.copy is defined else false)) %}
       {% if allow_copy %}
       {% set copy_icon = load_data(path="icon/copy.svg") %}
       {% set check_icon = load_data(path="icon/check.svg") %}
@@ -100,11 +101,12 @@
       {% endif %}
       <article class="prose">
         <h1>{{ page.title }}</h1>
+        {% set date_format = section.extra.date_format if section.extra.date_format is defined else (config.extra.date_format if config.extra.date_format is defined else "%b %-d, %Y") %}
         <div id="post-info">
           <div id="date">
-            <span id="publish">{{ page.date | date(format=section.extra.date_format) }}</span>
+            <span id="publish">{{ page.date | date(format=date_format) }}</span>
             {% if page.updated and page.updated != page.date -%}
-            <span>Updated on <span id="updated">{{ page.updated | date(format=section.extra.date_format) }}</span></span>
+            <span>Updated on <span id="updated">{{ page.updated | date(format=date_format) }}</span></span>
             {% endif -%}
           </div>
 
@@ -117,13 +119,15 @@
           {% endif %}
         </div>
 
-        {% if page.extra.outdate_alert is defined %}{% set show_outdate_alert = page.extra.outdate_alert %}{% else %}{% set show_outdate_alert = section.extra.outdate_alert %}{% endif %}
-        {% if page.extra.outdate_alert_days is defined %}{% set outdate_alert_days = page.extra.outdate_alert_days %}{% else %}{% set outdate_alert_days = section.extra.outdate_alert_days %}{% endif %}
+        {% set show_outdate_alert = page.extra.outdate_alert if page.extra.outdate_alert is defined else (section.extra.outdate_alert if section.extra.outdate_alert is defined else (config.extra.outdate_alert if config.extra.outdate_alert is defined else false)) %}
+        {% set outdate_alert_days = page.extra.outdate_alert_days if page.extra.outdate_alert_days is defined else (section.extra.outdate_alert_days if section.extra.outdate_alert_days is defined else (config.extra.outdate_alert_days if config.extra.outdate_alert_days is defined else 120)) %}
 
         {% if show_outdate_alert -%}
+        {% set outdate_alert_text_before = section.extra.outdate_alert_text_before if section.extra.outdate_alert_text_before is defined else (config.extra.outdate_alert_text_before if config.extra.outdate_alert_text_before is defined else "") %}
+        {% set outdate_alert_text_after = section.extra.outdate_alert_text_after if section.extra.outdate_alert_text_after is defined else (config.extra.outdate_alert_text_after if config.extra.outdate_alert_text_after is defined else "") %}
         <blockquote id="outdate_alert" class="callout caution hidden" data-days="{{ outdate_alert_days }}"
-          data-alert-text-before="{{ section.extra.outdate_alert_text_before }}"
-          data-alert-text-after="{{ section.extra.outdate_alert_text_after }}">
+          data-alert-text-before="{{ outdate_alert_text_before }}"
+          data-alert-text-after="{{ outdate_alert_text_after }}">
           <div class="content"></div>
         </blockquote>
         {% endif %}
@@ -131,12 +135,12 @@
         {{ page.content | safe }}
       </article>
 
-      {% if page.extra.reaction is defined %}{% set show_reaction = page.extra.reaction %}{% else %}{% set show_reaction = config.extra.reaction %}{% endif %}
+      {% set show_reaction = page.extra.reaction if page.extra.reaction is defined else (section.extra.reaction if section.extra.reaction is defined else (config.extra.reaction if config.extra.reaction is defined else false)) %}
       {% if show_reaction %}
       <div class="reaction {{ config.extra.reaction_align }}" data-endpoint="{{ config.extra.reaction_endpoint }}"></div>
       {% endif %}
 
-      {% if page.extra.comment is defined %}{% set show_comment = page.extra.comment %}{% else %}{% set show_comment = section.extra.comment %}{% endif %}
+      {% set show_comment = page.extra.comment if page.extra.comment is defined else (section.extra.comment if section.extra.comment is defined else (config.extra.comment if config.extra.comment is defined else false)) %}
       {% if show_comment %}
       <div class="giscus"></div>
       {% include "_giscus_script.html" %}
@@ -150,7 +154,8 @@
 
 {% block script %}
 <script src="/js/lightense.min.js"></script>
-{% if page.extra.mermaid %}
+{% set enable_mermaid = page.extra.mermaid if page.extra.mermaid is defined else (section.extra.mermaid if section.extra.mermaid is defined else (config.extra.mermaid if config.extra.mermaid is defined else false)) %}
+{% if enable_mermaid %}
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
   mermaid.initialize({ startOnLoad: true });
