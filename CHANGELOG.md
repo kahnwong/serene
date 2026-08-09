@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 - feat: migrate to zola v0.23 / Tera v2, the minimum zola version required is now `v0.23.2`, shortcodes are rewritten as Tera components
+- feat: tag links are now generated via zola's taxonomy API instead of hardcoded `/tags/` paths, so the `taxonomy_root` config option (e.g. `taxonomy_root = "blog"` for `/blog/tags/xxx` URLs) is respected
 
 ### Migrate from zola v0.22
 

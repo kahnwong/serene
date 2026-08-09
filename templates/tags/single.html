@@ -21,7 +21,8 @@
 
 {% block content %}
 <div id="wrapper">
-  {{ <back_link path={get_url(path="/tags")} config /> }}
+  {% set tags_taxonomy = get_taxonomy(kind="tags") %}
+  {{ <back_link path={tags_taxonomy.permalink} config /> }}
   <main class="layout-list">
     <div class="title">
       <span># {{ term.name }}</span>
