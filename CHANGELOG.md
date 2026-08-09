@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 
 - feat: migrate to zola v0.23 / Tera v2, the minimum zola version required is now `v0.23.2`, shortcodes are rewritten as Tera components
 - feat: tag links are now generated via zola's taxonomy API instead of hardcoded `/tags/` paths, so the `taxonomy_root` config option (e.g. `taxonomy_root = "blog"` for `/blog/tags/xxx` URLs) is respected
+- feat: support multiple blog-like list sections — post pages now read config from their own parent section instead of the `blog_section_path` one, and each list section can have its own feed (`generate_feeds = true` in its `_index.md`); `blog_section_path` now only designates the main section used by the home page's recent posts and the tags pages
+- refactor: `blog.html` template is renamed to `posts.html`, change `template = "blog.html"` to `template = "posts.html"` in your blog section's `_index.md`
 
 ### Migrate from zola v0.22
 
@@ -22,6 +24,7 @@ Zola v0.23 removed shortcodes and Tera macros in favor of [Tera components](http
 - The `date` filter is now backed by [jiff](https://docs.rs/jiff/latest/jiff/fmt/strtime/index.html) instead of chrono. Common `date_format` values like `"%b %-d, %Y"` still work, but chrono-specific specifiers (e.g. `%+`) are no longer supported and will fail the build — check your `date_format` options against the jiff docs
 - Syntax highlighting CSS files (`giallo-light.css` / `giallo-dark.css`) are now generated directly into the output directory instead of `static/`, so you can remove them from your `static/` folder and `.gitignore`
 - If you have custom templates that override serene's, they must be migrated to Tera v2 as well, see the [Tera migration guide](https://github.com/Keats/tera/blob/master/MIGRATION.md)
+- The `blog.html` template is renamed to `posts.html`: change `template = "blog.html"` to `template = "posts.html"` in your blog section's `_index.md`
 
 ## [5.7.0] - 2026-08-09
 

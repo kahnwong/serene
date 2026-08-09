@@ -62,7 +62,7 @@ For blog section, create `myblog/content/posts/_index.md`:
 title = "My Blog"
 description = "My blog site."
 sort_by = "date"
-template = "blog.html"
+template = "posts.html"
 page_template = "post.html"
 insert_anchor_links = "right"
 generate_feeds = true
@@ -88,7 +88,7 @@ outdate_alert_text_after = " days ago and may be out of date."
 +++
 ```
 
-Blog section is defined by `blog.html` and `post.html`. Serene also has a special template called `prose.html`, it applies the same styles of blog post page. You can use it as a section template for a custom section page, for example if you want a separate `about` page, you can add a `{ name = "about", path = "/about", is_external = false }` to the `sections` and create a `myblog/content/about/_index.md`:
+Blog section is defined by `posts.html` and `post.html`. Serene also has a special template called `prose.html`, it applies the same styles of blog post page. You can use it as a section template for a custom section page, for example if you want a separate `about` page, you can add a `{ name = "about", path = "/about", is_external = false }` to the `sections` and create a `myblog/content/about/_index.md`:
 
 ```
 +++
@@ -114,6 +114,12 @@ Hi, My name is ....
 ```
 
 The default date format is "%b %-d, %Y", e.g. "Dec 13, 2025", check [this page](https://docs.rs/jiff/latest/jiff/fmt/strtime/index.html) if you want to customize it, for example change to "%Y-%-m-%-d", e.g. "2025-2-13".
+
+### Multiple list sections
+
+You can have more than one blog-like list section, e.g. a `series` section alongside `posts`. Just create `myblog/content/series/_index.md` the same way as the blog section (with `template = "posts.html"` and `page_template = "post.html"`), and add it to `sections` in `config.toml`. Each list section has its own options in `[extra]` (`date_format`, `toc`, `categorized`, etc.), and can have its own feed by setting `generate_feeds = true` in its `_index.md` (available at e.g. `/series/feed.xml`).
+
+The `blog_section_path` option in `config.toml` points to your *main* blog section, it is used by the recent posts list of the home page and by the tags pages (tags are site-wide: posts from all list sections that share a tag will be listed together).
 
 Now the myblog directory may look like this:
 
@@ -165,11 +171,12 @@ By default there is theme toggle button to switch between light and dark mode, y
 
 ## RSS
 
-Zola's default feed file is located in the root directory of the site, set `generate_feeds = true` in `config.toml`, `feed_filenames` can be set to `["atom.xml"]` or `["rss.xml"] ` , corresponding to two different rss file standards, you should also set `generate_feeds = false` in `myblog/content/posts/_index.md`
+There are two ways to provide feeds:
 
-The serene theme looks more like a personal website, the posts are in the `/posts` directory, you may want the feed file to be in the `/posts` directory instead of the root directory, this requires you to set `generate_feeds = false ` `feed_filenames = ["feed.xml"]` in `config.toml`, and set `generate_feeds = true` in `myblog/content/posts/_index.md`.
+- **Per-section feeds** (recommended): set `generate_feeds = false` in `config.toml`, and `generate_feeds = true` in the `_index.md` of your list sections. Each of these sections gets its own feed (e.g. `/posts/feed.xml`, `/series/feed.xml`), using the `title` and `description` of that section. The RSS button in the footer links to the feed of the section the current page belongs to.
+- **A single site-wide feed**: set `generate_feeds = true` in `config.toml`, and `generate_feeds = false` in section `_index.md` files. The feed is located in the root directory (e.g. `/feed.xml`), contains posts from all sections, and uses the `title` and `description` of `config.toml`. The RSS button in the footer links to it on all pages.
 
-`feed.xml` uses `title` and `description` from `myblog/content/posts/_index.md`, the other two use `config.toml`'s.
+`feed_filenames` can be set to `["feed.xml"]` (serene's own atom template), or `["atom.xml"]` / `["rss.xml"]` (zola's built-in templates), corresponding to different feed standards.
 
 ## Open Graph
 
