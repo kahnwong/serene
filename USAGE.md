@@ -385,6 +385,8 @@ Note that component arguments other than strings are wrapped in `{...}`, e.g. `a
 
 Since your markdown content is now a Tera template, if you want to write literal `{{` or `{%` in your content (e.g. in a code block), wrap it with `{% raw %}` and `{% endraw %}`.
 
+Note that component calls must be at the top level of your content — don't nest them inside a list item, as the component's HTML output would break the list's indentation rules and produce broken HTML.
+
 ## Collection
 
 This theme has a special component for creating a collection of items. These collections can be used to showcase various types of your list, such as projects, publications, blogroll, bookmarks, etc. Check [this page](http://serene-demo.pages.dev/collections) on demo site to see some examples.
