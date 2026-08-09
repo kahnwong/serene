@@ -234,7 +234,8 @@ a:focus-visible {
       user-select: none;
     }
 
-    &.z-code {
+    &.z-l-code,
+    &.z-d-code {
       background-color: var(--bg-color);
     }
 

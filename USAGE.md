@@ -1,5 +1,7 @@
 This is the detailed guide on how to use zola-theme-serene. You should also check zola's [documentation](https://www.getzola.org/documentation/getting-started/overview/).
 
+Serene requires zola `0.23.2` or later.
+
 ## Installation
 
 Create a zola site and add serene theme (assuming your site is called `myblog`):
@@ -111,7 +113,7 @@ reaction = false
 Hi, My name is ....
 ```
 
-The default date format is "%b %-d, %Y", e.g. "Dec 13, 2025", check [this page](https://docs.rs/chrono/0.4.40/chrono/format/strftime/index.html) if you want to customize it, for example change to "%Y-%-m-%-d", e.g. "2025-2-13".
+The default date format is "%b %-d, %Y", e.g. "Dec 13, 2025", check [this page](https://docs.rs/jiff/latest/jiff/fmt/strtime/index.html) if you want to customize it, for example change to "%Y-%-m-%-d", e.g. "2025-2-13".
 
 Now the myblog directory may look like this:
 
@@ -233,7 +235,7 @@ new post about something...
 
 Some of these options can also be configured in `myblog/content/posts/_index.md`, as the default value for all posts.
 
-If you set `blog_categorized = true`, posts will be sorted alphabetically by default, you can manually set the order by adding a prefix  `__[0-9]{2}__` in front of the category name, for example, `categories = ["__01__CatXXX"]`
+If you set `categorized = true`, posts will be sorted alphabetically by default, you can manually set the order by adding a prefix  `__[0-9]{2}__` in front of the category name, for example, `categories = ["__01__CatXXX"]`
 
 ## Table of Contents
 
@@ -321,14 +323,22 @@ Giscus also support a reaction feature, but it requires visitors to log in to Gi
 
 Zola supports some [annotations for code blocks](https://www.getzola.org/documentation/content/syntax-highlighting/#annotations).
 
-## Shortcodes
+## Components
 
-[Shortcodes](https://www.getzola.org/documentation/content/shortcodes/) are some special templates.
+Since zola `0.23`, your markdown content is itself a [Tera](https://keats.github.io/tera/) template, and shortcodes were replaced by [Tera components](https://www.getzola.org/documentation/content/overview/#templating-your-content). Serene provides some built-in components.
 
-- Use `figure` to add caption or width/height to an image, `alt` `caption` `width` `height` are all optional:
+Note that component arguments other than strings are wrapped in `{...}`, e.g. `autoplay={true}`.
+
+- Use `figure` to add caption or width/height to an image, `alt` `caption` `width` `height` are all optional (`width` and `height` take strings):
 
   ```md
-  {{ figure(src="/path/to/img", alt="alt text", caption="caption text", width="600", height="400") }}
+  {{ <figure src="/path/to/img" alt="alt text" caption="caption text" width="600" height="400" /> }}
+  ```
+
+  If `src` is the filename of a [colocated asset](https://www.getzola.org/documentation/content/overview/#asset-colocation), pass `page` (or `section` when used in a section's `_index.md`) so the image URL can be resolved:
+
+  ```md
+  {{ <figure src="colocated-img.png" caption="caption text" page /> }}
   ```
 
   The caption is parsed as markdown so you can use bold / italic / link, for example `caption="[via](https://example.com)"`
@@ -338,17 +348,17 @@ Zola supports some [annotations for code blocks](https://www.getzola.org/documen
 - Use `quote` to display a special quote block, `cite` is optional:
 
   ```md
-  {% quote(cite="") %}
+  {% <quote cite=""> %}
   // content...
-  {% end %}
+  {% </quote> %}
   ```
 
 - Use `detail` to add an expandable detail block, `default_open` is optional:
 
   ```md
-  {% detail(title="", default_open=false) %}
+  {% <detail title="" default_open={false}> %}
   // content...
-  {% end %}
+  {% </detail> %}
   ```
 
 - As you can see in [this page](https://serene-demo.pages.dev/posts/callouts) of the demo site, callouts are special blockquote blocks, just like [github's](https://github.com/orgs/community/discussions/16925). There are currently 5 types: `note` `tip` `important` `warning`  `caution`.
@@ -356,34 +366,36 @@ Zola supports some [annotations for code blocks](https://www.getzola.org/documen
    `title` is optional:
 
   ```md
-  {% note(title="Note") %}
+  {% <note title="Note"> %}
   note text
-  {% end %}
+  {% </note> %}
   ```
 
-  ***Update: [github callout/alert syntax](https://github.com/orgs/community/discussions/16925) is supported since zola v0.21 (however it doesn't display icon and title), the callout shortcodes will be deprecated in this theme's next major release***
+  [Github callout/alert syntax](https://github.com/orgs/community/discussions/16925) is also supported by zola natively (however it doesn't display icon and title).
 
 - Use `mermaid` to add a mermaid chart:
 
   ```md
-  {% mermaid() %}
+  {% <mermaid> %}
   flowchart LR
   A[Hard] -->|Text| B(Round)
   B --> C{Decision}
   C -->|One| D[Result 1]
   C -->|Two| E[Result 2]
-  {% end %}
+  {% </mermaid> %}
   ```
 
 - Use `youtube` to embed a youtube video, `autoplay` is optional, default to `false`:
 
   ```md
-  {{ youtube(id="<youtube-video-id>", autoplay=true) }}
+  {{ <youtube id="<youtube-video-id>" autoplay={true} /> }}
   ```
+
+Since your markdown content is now a Tera template, if you want to write literal `{{` or `{%` in your content (e.g. in a code block), wrap it with `{% raw %}` and `{% endraw %}`.
 
 ## Collection
 
-This theme has several special shortcodes for creating a collection of items. These collections can be used to showcase various types of your list, such as projects, publications, blogroll, bookmarks, etc. Check [this page](http://serene-demo.pages.dev/collections) on demo site to see some examples.
+This theme has a special component for creating a collection of items. These collections can be used to showcase various types of your list, such as projects, publications, blogroll, bookmarks, etc. Check [this page](http://serene-demo.pages.dev/collections) on demo site to see some examples.
 
 Currently, there are 7 types of collection item:
 
@@ -462,7 +474,7 @@ Currently, there are 7 types of collection item:
     ```
 
 
-List your items in a toml file and then use a `collection` shortcode to render them.
+List your items in a toml file and then use the `collection` component to render them.
 
 For example, to create a "projects" section page:
 
@@ -505,7 +517,7 @@ For example, to create a "projects" section page:
     subtitle = "Some cool projects I made"
     +++
 
-    {{ collection(file="projects.toml") }}
+    {{ <collection file="projects.toml" section /> }}
     ```
 
 3. Add projects section in `sections` of `config.toml`

@@ -1,30 +1,27 @@
-{% import "macros/prose.html" as macros %}
-{% import "macros/seo.html" as seo %}
 {% extends "_base.html" %}
 
 {% block page %}tag-single{% endblock page %}
 {% block lang -%}
-{% set blog_section_path = config.extra.blog_section_path | trim_start_matches(pat="/") %}
+{% set blog_section_path = config.extra.blog_section_path | trim_start(pat="/") %}
 {% set section_md_path = blog_section_path ~ "/_index.md"%}
 {% set section = get_section(path=section_md_path, metadata_only=true) %}
 {%- if section.extra.lang %}{{ section.extra.lang }}{% else %}{{ lang }}{% endif -%}
 {%- endblock lang %}
 {% block title %}{{section.title}}{% endblock title %}
 {% block desc %}
-  {%- set blog_section_path = config.extra.blog_section_path | trim_start_matches(pat="/") -%}
+  {%- set blog_section_path = config.extra.blog_section_path | trim_start(pat="/") -%}
   {%- set section = get_section(path=blog_section_path ~ "/_index.md", metadata_only=true) -%}
   {%- if section.extra.lang %}{% set og_lang = section.extra.lang %}{% else %}{% set og_lang = lang %}{% endif -%}
-  {{ seo::seo(
-      title=section.title,
-      desc=term.name,
-      url=term.permalink,
-      lang=og_lang
-  ) }}
+  {{ <seo config
+      title={section.title}
+      desc={term.name}
+      url={term.permalink}
+      lang={og_lang} /> }}
 {% endblock desc %}
 
 {% block content %}
 <div id="wrapper">
-  {{ macros::back_link(path = get_url(path="/tags")) }}
+  {{ <back_link path={get_url(path="/tags")} config /> }}
   <main class="layout-list">
     <div class="title">
       <span># {{ term.name }}</span>

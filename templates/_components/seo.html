@@ -1,9 +1,9 @@
-{% macro seo(title, desc, url="", page_type="website", image="", colocated_path="", published="", updated="", tags="", lang="") %}
+{% component seo(title, desc, config, url = "", page_type = "website", image = "", colocated_path = "", published = "", updated = "", tags = [], lang = "") %}
 {%- set og_image = "" -%}
 {%- if image -%}
-  {%- if image is starting_with("http://") or image is starting_with("https://") or image is starting_with("//") -%}
+  {%- if image is starting_with(pat="http://") or image is starting_with(pat="https://") or image is starting_with(pat="//") -%}
     {%- set og_image = image -%}
-  {%- elif image is starting_with("/") -%}
+  {%- elif image is starting_with(pat="/") -%}
     {%- set og_image = get_url(path=image) -%}
   {%- elif colocated_path -%}
     {%- set og_image = get_url(path=colocated_path ~ image) -%}
@@ -11,7 +11,7 @@
     {%- set og_image = get_url(path=image) -%}
   {%- endif -%}
 {%- elif config.extra.og_image -%}
-  {%- if config.extra.og_image is starting_with("http://") or config.extra.og_image is starting_with("https://") or config.extra.og_image is starting_with("//") -%}
+  {%- if config.extra.og_image is starting_with(pat="http://") or config.extra.og_image is starting_with(pat="https://") or config.extra.og_image is starting_with(pat="//") -%}
     {%- set og_image = config.extra.og_image -%}
   {%- else -%}
     {%- set og_image = get_url(path=config.extra.og_image) -%}
@@ -36,4 +36,4 @@
 <meta name="twitter:title" content="{{ title }}">
 <meta name="twitter:description" content="{{ desc | striptags | trim }}">
 {% if og_image %}<meta name="twitter:image" content="{{ og_image | safe }}">{% endif %}
-{% endmacro %}
+{% endcomponent seo %}

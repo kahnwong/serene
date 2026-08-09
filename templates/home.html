@@ -1,4 +1,3 @@
-{% import "macros/seo.html" as seo %}
 {% extends "_base.html" %}
 
 {% block page %}homepage{% endblock page%}
@@ -6,12 +5,11 @@
 {% block title %}{{ config.title }}{% endblock title %}
 {% block desc %}
   {%- if section.extra.lang %}{% set og_lang = section.extra.lang %}{% else %}{% set og_lang = section.lang %}{% endif -%}
-  {{ seo::seo(
-      title=config.title,
-      desc=config.description,
-      url=get_url(path="/"),
-      lang=og_lang
-  ) }}
+  {{ <seo config
+      title={config.title}
+      desc={config.description}
+      url={get_url(path="/")}
+      lang={og_lang} /> }}
 {% endblock desc %}
 
 {% block head %}
@@ -90,12 +88,12 @@
       {{ section.content | trim | safe }}
     </section>
     {% if section.extra.recent %}
-    {% set blog_section_path = config.extra.blog_section_path | trim_start_matches(pat="/") %}
+    {% set blog_section_path = config.extra.blog_section_path | trim_start(pat="/") %}
     {% set section_md_path = blog_section_path ~ "/_index.md" %}
     {% set blog_section = get_section(path=section_md_path) %}
     <section class="layout-list">
       <div class="post-list">
-        {% for post in blog_section.pages | slice(end=section.extra.recent_max) %}
+        {% for post in blog_section.pages[:section.extra.recent_max] %}
         <a class="post instant {% if post.extra.featured %}featured{% endif %}" href="{{ post.permalink }}">
           <span>{{ post.title }}</span>
           <span class="date">{{ post.date | date(format=section.extra.date_format) }}</span>

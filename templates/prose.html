@@ -1,5 +1,3 @@
-{% import "macros/prose.html" as macros %}
-{% import "macros/seo.html" as seo %}
 {% extends "_base.html" %}
 
 {% block page %}prose-page{% endblock page %}
@@ -14,12 +12,11 @@
     {% set desc = config.description %}
   {% endif %}
   {%- if section.extra.lang %}{% set og_lang = section.extra.lang %}{% else %}{% set og_lang = section.lang %}{% endif -%}
-  {{ seo::seo(
-      title=section.title,
-      desc=desc,
-      url=section.permalink,
-      lang=og_lang
-  ) }}
+  {{ <seo config
+      title={section.title}
+      desc={desc}
+      url={section.permalink}
+      lang={og_lang} /> }}
 {% endblock desc %}
 
 {% block head %}
@@ -50,7 +47,7 @@
 {% block content %}
 <div id="wrapper">
   <main>
-    {{ macros::back_link(path = get_url(path="/")) }}
+    {{ <back_link path={get_url(path="/")} config /> }}
     {% include "_section_title.html" %}
     <div>
       {% if section.extra.copy %}

@@ -1,17 +1,15 @@
-{% import "macros/prose.html" as macros %}
-{% import "macros/seo.html" as seo %}
 {% extends "_base.html" %}
 
 {% block page %}post{% endblock page %}
 {% block lang -%}
-{%- set blog_section_path = config.extra.blog_section_path | trim_start_matches(pat="/") -%}
+{%- set blog_section_path = config.extra.blog_section_path | trim_start(pat="/") -%}
 {%- set section_md_path = blog_section_path ~ "/_index.md" -%}
 {%- set section = get_section(path=section_md_path, metadata_only=true) -%}
 {%- if page.extra.lang %}{{page.extra.lang}}{% elif section.extra.lang %}{{section.extra.lang}}{% else %}{{page.lang}}{% endif -%}
 {%- endblock lang %}
 {% block title %}{{ page.title }}{% endblock title %}
 {% block desc %}
-  {%- set blog_section_path = config.extra.blog_section_path | trim_start_matches(pat="/") -%}
+  {%- set blog_section_path = config.extra.blog_section_path | trim_start(pat="/") -%}
   {%- set section = get_section(path=blog_section_path ~ "/_index.md", metadata_only=true) -%}
   {% if page.summary %}
     {% set desc = page.summary %}
@@ -23,18 +21,17 @@
     {% set desc = config.description %}
   {% endif %}
   {%- if page.extra.lang %}{% set og_lang = page.extra.lang %}{% elif section.extra.lang %}{% set og_lang = section.extra.lang %}{% else %}{% set og_lang = page.lang %}{% endif -%}
-  {{ seo::seo(
-      title=page.title,
-      desc=desc,
-      url=page.permalink,
-      page_type="article",
-      image=page.extra.og_image | default(value=""),
-      colocated_path=page.colocated_path | default(value=""),
-      published=page.date,
-      updated=page.updated | default(value=""),
-      tags=page.taxonomies.tags | default(value=""),
-      lang=og_lang
-  ) }}
+  {{ <seo config
+      title={page.title}
+      desc={desc}
+      url={page.permalink}
+      page_type="article"
+      image={page.extra?.og_image or ""}
+      colocated_path={page.colocated_path or ""}
+      published={page.date or ""}
+      updated={page.updated or ""}
+      tags={page.taxonomies?.tags or []}
+      lang={og_lang} /> }}
 {% endblock desc %}
 
 {% block head %}
@@ -95,7 +92,7 @@
     {% endif %}
   </aside>
   <main>
-    {{ macros::back_link(path = get_url(path=section.path)) }}
+    {{ <back_link path={get_url(path=section.path)} config /> }}
 
     <div>
       {% if page.extra.copy is defined %}{% set allow_copy = page.extra.copy %}{% else %}{% set allow_copy = section.extra.copy %}{% endif %}

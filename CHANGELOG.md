@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+- feat: migrate to zola v0.23 / Tera v2, the minimum zola version required is now `v0.23.2`, shortcodes are rewritten as Tera components
+
+### Migrate from zola v0.22
+
+Zola v0.23 removed shortcodes and Tera macros in favor of [Tera components](https://www.getzola.org/documentation/content/overview/#templating-your-content), and your markdown content is now itself a Tera template. Once you update zola and this theme, you need to update your content accordingly:
+
+- Shortcode calls in your markdown must be rewritten in component syntax. Arguments other than strings are wrapped in `{...}`:
+  - `{{ figure(src="...", width="600") }}` → `{{ <figure src="..." width="600" /> }}`
+  - `{% note(title="Note") %} ... {% end %}` → `{% <note title="Note"> %} ... {% </note> %}`
+  - `{{ youtube(id="...", autoplay=true) }}` → `{{ <youtube id="..." autoplay={true} /> }}`
+  - `{{ collection(file="projects.toml") }}` → `{{ <collection file="projects.toml" section /> }}` (note the extra `section`)
+- For `figure` with a colocated image, pass the page context: `{{ <figure src="img.png" page /> }}` (or `section` instead of `page` when used in a section's `_index.md`)
+- `width` / `height` of `figure` must be strings: `width="600"`, not `width=600`
+- Literal `{{` or `{%` in your content (e.g. code blocks showing template syntax, GitHub Actions `${{ ... }}`) must be wrapped with `{% raw %}` ... `{% endraw %}`, otherwise zola will try to interpret them as Tera syntax. For files full of such content, you can instead list them in the `skip_content_templating` config option (glob patterns) to opt them out of templating entirely (components won't work in those files)
+- The `date` filter is now backed by [jiff](https://docs.rs/jiff/latest/jiff/fmt/strtime/index.html) instead of chrono. Common `date_format` values like `"%b %-d, %Y"` still work, but chrono-specific specifiers (e.g. `%+`) are no longer supported and will fail the build — check your `date_format` options against the jiff docs
+- Syntax highlighting CSS files (`giallo-light.css` / `giallo-dark.css`) are now generated directly into the output directory instead of `static/`, so you can remove them from your `static/` folder and `.gitignore`
+- If you have custom templates that override serene's, they must be migrated to Tera v2 as well, see the [Tera migration guide](https://github.com/Keats/tera/blob/master/MIGRATION.md)
+
 ## [5.7.0] - 2026-08-09
 
 - feat: add open graph & twitter card meta tags and canonical link
