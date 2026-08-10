@@ -3,6 +3,6 @@
 public/
 content/
 static/img/
-config.toml
+zola.toml
 
 .DS_Store

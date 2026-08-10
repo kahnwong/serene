@@ -13,11 +13,11 @@ git init
 git submodule add -b latest https://github.com/isunjn/serene.git themes/serene
 ```
 
-Copy the content of `myblog/themes/serene/config.example.toml` to `myblog/config.toml`.
+Copy the content of `myblog/themes/serene/zola.toml.example` to `myblog/zola.toml`.
 
 ## Sections and Pages
 
-There is a `nav` config option in your `config.toml`, which enumerates the navigation entries of the home page. An entry whose `path` starts with `/` links to a section of your site, any other path (e.g. an `https://` URL) is treated as an external link and opens in a new tab. You should have at least one `blog` section.
+There is a `nav` config option in your `zola.toml`, which enumerates the navigation entries of the home page. An entry whose `path` starts with `/` links to a section of your site, any other path (e.g. an `https://` URL) is treated as an external link and opens in a new tab. You should have at least one `blog` section.
 
 The name and path can be changed, be noticed that if you changed the blog section path (e.g. from `/posts` to `/blog`), then you should also change `blog_section_path` option.
 
@@ -65,7 +65,7 @@ back_to_top = true # show back-to-top button
 +++
 ```
 
-Display options like `toc` / `code_copy` / `comment` / `date_format` have site-wide defaults in `config.toml`, you can override them here for this section (e.g. `toc = false`), see [Front Matter](#front-matter) for details.
+Display options like `toc` / `code_copy` / `comment` / `date_format` have site-wide defaults in `zola.toml`, you can override them here for this section (e.g. `toc = false`), see [Front Matter](#front-matter) for details.
 
 Blog section is defined by `posts.html` and `post.html`. Serene also has a special template called `prose.html`, it applies the same styles of blog post page. You can use it as a section template for a custom section page, for example if you want a separate `about` page, you can add a `{ name = "about", path = "/about" }` to the `nav` and create a `myblog/content/about/_index.md`:
 
@@ -90,14 +90,14 @@ The default date format is "%b %-d, %Y", e.g. "Dec 13, 2025", check [this page](
 
 ### Multiple list sections
 
-You can have more than one blog-like list section, e.g. a `series` section alongside `posts`. Just create `myblog/content/series/_index.md` the same way as the blog section (with `template = "posts.html"` and `page_template = "post.html"`), and add it to `nav` in `config.toml`. Each list section has its own options in `[extra]` (`date_format`, `toc`, `categorized`, etc.), and can have its own feed by setting `generate_feeds = true` in its `_index.md` (available at e.g. `/series/feed.xml`).
+You can have more than one blog-like list section, e.g. a `series` section alongside `posts`. Just create `myblog/content/series/_index.md` the same way as the blog section (with `template = "posts.html"` and `page_template = "post.html"`), and add it to `nav` in `zola.toml`. Each list section has its own options in `[extra]` (`date_format`, `toc`, `categorized`, etc.), and can have its own feed by setting `generate_feeds = true` in its `_index.md` (available at e.g. `/series/feed.xml`).
 
-The `blog_section_path` option in `config.toml` points to your *main* blog section, it is used by the recent posts list of the home page and by the tags pages (tags are site-wide: posts from all list sections that share a tag will be listed together).
+The `blog_section_path` option in `zola.toml` points to your *main* blog section, it is used by the recent posts list of the home page and by the tags pages (tags are site-wide: posts from all list sections that share a tag will be listed together).
 
 Now the myblog directory may look like this:
 
 ```
-├── config.toml
+├── zola.toml
 ├── content/
 │   ├── posts/
 │   │   └── _index.md
@@ -128,7 +128,7 @@ Create a new directory `img` under `myblog/static`, put favicon related files he
 
 ## Icon
 
-The default icons are placed in `myblog/themes/serene/static/icon`, the `icon` value in `links` of `config.toml` is the file name of the svg file.
+The default icons are placed in `myblog/themes/serene/static/icon`, the `icon` value in `links` of `zola.toml` is the file name of the svg file.
 
 To customize, find the svg file you want, modify (in case you don't kown, a svg file is just a plian text file) its width and height to `18`, and the color to `currentColor`:
 
@@ -140,14 +140,14 @@ The default icons mostly came from [Remix Icon](https://remixicon.com/).
 
 ## Theme
 
-The `color_scheme` option in `config.toml` controls the light/dark mode behavior: `"auto"` (default) follows the visitor's system preference and shows a theme toggle button, while `"light"` / `"dark"` locks the site to a single mode and hides the button.
+The `color_scheme` option in `zola.toml` controls the light/dark mode behavior: `"auto"` (default) follows the visitor's system preference and shows a theme toggle button, while `"light"` / `"dark"` locks the site to a single mode and hides the button.
 
 ## RSS
 
 There are two ways to provide feeds:
 
-- **Per-section feeds** (recommended): set `generate_feeds = false` in `config.toml`, and `generate_feeds = true` in the `_index.md` of your list sections. Each of these sections gets its own feed (e.g. `/posts/feed.xml`, `/series/feed.xml`), using the `title` and `description` of that section. The RSS button in the footer links to the feed of the section the current page belongs to.
-- **A single site-wide feed**: set `generate_feeds = true` in `config.toml`, and `generate_feeds = false` in section `_index.md` files. The feed is located in the root directory (e.g. `/feed.xml`), contains posts from all sections, and uses the `title` and `description` of `config.toml`. The RSS button in the footer links to it on all pages.
+- **Per-section feeds** (recommended): set `generate_feeds = false` in `zola.toml`, and `generate_feeds = true` in the `_index.md` of your list sections. Each of these sections gets its own feed (e.g. `/posts/feed.xml`, `/series/feed.xml`), using the `title` and `description` of that section. The RSS button in the footer links to the feed of the section the current page belongs to.
+- **A single site-wide feed**: set `generate_feeds = true` in `zola.toml`, and `generate_feeds = false` in section `_index.md` files. The feed is located in the root directory (e.g. `/feed.xml`), contains posts from all sections, and uses the `title` and `description` of `zola.toml`. The RSS button in the footer links to it on all pages.
 
 `feed_filenames` can be set to `["feed.xml"]` (serene's own atom template), or `["atom.xml"]` / `["rss.xml"]` (zola's built-in templates), corresponding to different feed standards.
 
@@ -158,7 +158,7 @@ Each page has [Open Graph](https://ogp.me/) and Twitter Card meta tags (plus a c
 Title and description come from the same sources as the page's `<title>` and meta description. The preview image is resolved as follows:
 
 - Post pages use `og_image` in the `[extra]` section of front matter, if set. It can be a full URL, a path in the `static` folder (starting with `/`), or the filename of a [colocated asset](https://www.getzola.org/documentation/content/overview/#asset-colocation) of the post.
-- Otherwise, the site-wide default `og_image` in the `[extra]` section of `config.toml` is used, if set. It can be a full URL or a path in the `static` folder, e.g. `og_image = "img/og.png"`.
+- Otherwise, the site-wide default `og_image` in the `[extra]` section of `zola.toml` is used, if set. It can be a full URL or a path in the `static` folder, e.g. `og_image = "img/og.png"`.
 - If neither is set, image related tags are omitted.
 
 An image around 1200x630 is recommended for the best display on most platforms.
@@ -213,7 +213,7 @@ og_image = "cover.png"
 new post about something...
 ```
 
-Display options follow a unified fallback chain: **post front-matter → the post's section `_index.md` → `[extra]` of `config.toml`**, the closest one wins. This applies to `toc`, `code_copy`, `comment`, `math`, `mermaid`, `reaction`, `outdated_alert` and `outdated_alert_days` (`date_format` and `outdated_alert_text_before/after` follow a section → config chain). So you can set site-wide defaults in `config.toml`, override them per section, and override again per post.
+Display options follow a unified fallback chain: **post front-matter → the post's section `_index.md` → `[extra]` of `zola.toml`**, the closest one wins. This applies to `toc`, `code_copy`, `comment`, `math`, `mermaid`, `reaction`, `outdated_alert` and `outdated_alert_days` (`date_format` and `outdated_alert_text_before/after` follow a section → config chain). So you can set site-wide defaults in `zola.toml`, override them per section, and override again per post.
 
 If you set `categorized = true`, posts will be sorted alphabetically by default, you can manually set the order by adding a prefix  `__[0-9]{2}__` in front of the category name, for example, `categories = ["__01__CatXXX"]`
 
@@ -237,13 +237,13 @@ If one of your posts has strong timeliness, you can display an outdated alert af
 
 Set `outdated_alert` and `outdated_alert_days` to enable the alert.
 
-Options `outdated_alert_text_before` and `outdated_alert_text_after` are the text content of the alert, they can be set in `[extra]` of `config.toml`, or per section in its `_index.md`.
+Options `outdated_alert_text_before` and `outdated_alert_text_after` are the text content of the alert, they can be set in `[extra]` of `zola.toml`, or per section in its `_index.md`.
 
 ## Comment
 
 You can use [giscus](https://giscus.app) as the comment system.
 
-To enable it, you need to create `myblog/templates/_giscus_script.html` and put the script configured on the giscus website into it, then change the value of `data-theme` to `https://<your-domain-name>/giscus_light.css`, replace `<your-domain-name>` with you domain name, same as `base_url` in `config.toml`, if you set `color_scheme` to `"dark"`, replace `giscus_light.css` with `giscus_dark.css`.
+To enable it, you need to create `myblog/templates/_giscus_script.html` and put the script configured on the giscus website into it, then change the value of `data-theme` to `https://<your-domain-name>/giscus_light.css`, replace `<your-domain-name>` with you domain name, same as `base_url` in `zola.toml`, if you set `color_scheme` to `"dark"`, replace `giscus_light.css` with `giscus_dark.css`.
 
 Then set `comment = true` to enable comment.
 
@@ -502,7 +502,7 @@ For example, to create a "projects" section page:
     {{ <collection file="projects.toml" section /> }}
     ```
 
-3. Add projects section in `nav` of `config.toml`
+3. Add projects section in `nav` of `zola.toml`
 
     ```toml
     nav = [
@@ -531,7 +531,7 @@ To deploy a static site, refer to zola's [documentation about deployment](https:
 
 Check the [CHANGELOG.md](https://github.com/isunjn/serene/blob/main/CHANGELOG.md) on github for breaking changes before you update.
 
-If you copied some files from `myblog/themes/serene` to `myblog/` for customization, such as `_custom_css.html` or `main.scss`, then you should record what you have modified before you update, re-copy those files and re-apply your modification after updating. The `config.toml` should be re-copied too.
+If you copied some files from `myblog/themes/serene` to `myblog/` for customization, such as `_custom_css.html` or `main.scss`, then you should record what you have modified before you update, re-copy those files and re-apply your modification after updating. The `zola.toml` should be re-copied too.
 
 You can watch (`watch > custom > releases > apply`) this project on github to be reminded of a new release.
 

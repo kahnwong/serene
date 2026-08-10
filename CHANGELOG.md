@@ -8,10 +8,11 @@ All notable changes to this project will be documented in this file.
 - feat: tag links are now generated via zola's taxonomy API instead of hardcoded `/tags/` paths, so the `taxonomy_root` config option (e.g. `taxonomy_root = "blog"` for `/blog/tags/xxx` URLs) is respected
 - feat: support multiple blog-like list sections — post pages now read config from their own parent section instead of the `blog_section_path` one, and each list section can have its own feed (`generate_feeds = true` in its `_index.md`); `blog_section_path` now only designates the main section used by the home page's recent posts and the tags pages
 - refactor: `blog.html` template is renamed to `posts.html`, change `template = "blog.html"` to `template = "posts.html"` in your blog section's `_index.md`
-- feat: display options (`toc` / `code_copy` / `comment` / `math` / `mermaid` / `reaction` / `outdated_alert` / `date_format`, etc.) now follow a unified fallback chain: post front-matter → section `_index.md` → `[extra]` of `config.toml`, the closest one wins — notably `math` / `mermaid` can now be enabled for a whole section, and site-wide defaults can be set in `config.toml`
+- feat: display options (`toc` / `code_copy` / `comment` / `math` / `mermaid` / `reaction` / `outdated_alert` / `date_format`, etc.) now follow a unified fallback chain: post front-matter → section `_index.md` → `[extra]` of `zola.toml`, the closest one wins — notably `math` / `mermaid` can now be enabled for a whole section, and site-wide defaults can be set in `zola.toml`
 - refactor: several options are renamed for clarity: `force_theme` (`false | "light" | "dark"`) → `color_scheme` (`"auto" | "light" | "dark"`), `copy` → `code_copy`, `outdate_alert*` → `outdated_alert*`, and `id` of the home section → `handle`
 - refactor: the `sections` config option is renamed to `nav`, and its `is_external` field is removed — a `path` starting with `/` is an internal link, anything else (e.g. an `https://` URL) is treated as an external link automatically; external nav links now show a `ne-resize` cursor
-- refactor: `name` / `handle` / `bio` / `avatar` / `links` of the home page are moved from the home section's `_index.md` to `[extra]` of `config.toml`
+- refactor: `name` / `handle` / `bio` / `avatar` / `links` of the home page are moved from the home section's `_index.md` to `[extra]` of `zola.toml`
+- refactor: the example config file is renamed from `config.example.toml` to `zola.toml.example`, following zola v0.23's new default config file name `zola.toml` (the old `config.toml` name still works)
 
 ### Migrate from zola v0.22
 
@@ -30,13 +31,14 @@ Zola v0.23 removed shortcodes and Tera macros in favor of [Tera components](http
 - Syntax highlighting CSS files (`giallo-light.css` / `giallo-dark.css`) are now generated directly into the output directory instead of `static/`, so you can remove them from your `static/` folder and `.gitignore`
 - If you have custom templates that override serene's, they must be migrated to Tera v2 as well, see the [Tera migration guide](https://github.com/Keats/tera/blob/master/MIGRATION.md)
 - The `blog.html` template is renamed to `posts.html`: change `template = "blog.html"` to `template = "posts.html"` in your blog section's `_index.md`
-- Several options are renamed, update them in your `config.toml` / section `_index.md` / post front-matter:
+- Zola's default config file name is now `zola.toml` — you can rename your `config.toml` to `zola.toml` (optional, the old name still works)
+- Several options are renamed, update them in your `zola.toml` / section `_index.md` / post front-matter:
   - `force_theme = false | "light" | "dark"` → `color_scheme = "auto" | "light" | "dark"` (`false` becomes `"auto"`)
   - `copy` → `code_copy`
   - `outdate_alert` / `outdate_alert_days` / `outdate_alert_text_before` / `outdate_alert_text_after` → `outdated_alert` / `outdated_alert_days` / `outdated_alert_text_before` / `outdated_alert_text_after`
   - `id` in the home section's `_index.md` → `handle`
-  - `sections` in `config.toml` → `nav`, and remove the `is_external` field from its entries (external links are now detected automatically from the `path`)
-  - `name` / `handle` / `bio` / `avatar` / `links` move from the home section's `_index.md` to `[extra]` of `config.toml`
+  - `sections` in `zola.toml` → `nav`, and remove the `is_external` field from its entries (external links are now detected automatically from the `path`)
+  - `name` / `handle` / `bio` / `avatar` / `links` move from the home section's `_index.md` to `[extra]` of `zola.toml`
 
 ## [5.7.0] - 2026-08-09
 
