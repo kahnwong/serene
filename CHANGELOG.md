@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file.
 - refactor: `blog.html` template is renamed to `posts.html`, change `template = "blog.html"` to `template = "posts.html"` in your blog section's `_index.md`
 - feat: display options (`toc` / `code_copy` / `comment` / `math` / `mermaid` / `reaction` / `outdated_alert` / `date_format`, etc.) now follow a unified fallback chain: post front-matter → section `_index.md` → `[extra]` of `config.toml`, the closest one wins — notably `math` / `mermaid` can now be enabled for a whole section, and site-wide defaults can be set in `config.toml`
 - refactor: several options are renamed for clarity: `force_theme` (`false | "light" | "dark"`) → `color_scheme` (`"auto" | "light" | "dark"`), `copy` → `code_copy`, `outdate_alert*` → `outdated_alert*`, and `id` of the home section → `handle`
+- refactor: the `sections` config option is renamed to `nav`, and its `is_external` field is removed — a `path` starting with `/` is an internal link, anything else (e.g. an `https://` URL) is treated as an external link automatically; external nav links now show a `ne-resize` cursor
+- refactor: `name` / `handle` / `bio` / `avatar` / `links` of the home page are moved from the home section's `_index.md` to `[extra]` of `config.toml`
 
 ### Migrate from zola v0.22
 
@@ -33,6 +35,8 @@ Zola v0.23 removed shortcodes and Tera macros in favor of [Tera components](http
   - `copy` → `code_copy`
   - `outdate_alert` / `outdate_alert_days` / `outdate_alert_text_before` / `outdate_alert_text_after` → `outdated_alert` / `outdated_alert_days` / `outdated_alert_text_before` / `outdated_alert_text_after`
   - `id` in the home section's `_index.md` → `handle`
+  - `sections` in `config.toml` → `nav`, and remove the `is_external` field from its entries (external links are now detected automatically from the `path`)
+  - `name` / `handle` / `bio` / `avatar` / `links` move from the home section's `_index.md` to `[extra]` of `config.toml`
 
 ## [5.7.0] - 2026-08-09
 

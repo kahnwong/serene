@@ -46,29 +46,33 @@
 <div id="wrapper">
   <main>
     <section id="info">
-      {% if section.extra.avatar %}
-      <img src="{{ get_url(path=section.extra.avatar) }}" alt="avatar">
+      {% if config.extra.avatar %}
+      <img src="{{ get_url(path=config.extra.avatar) }}" alt="avatar">
       {% endif %}
       <div id="text">
         <div>
-          <span id="name">{{ section.extra.name }}</span>
-          {% if section.extra.handle %}
-          <span id="id">@{{ section.extra.handle }}</span>
+          <span id="name">{{ config.extra.name }}</span>
+          {% if config.extra.handle %}
+          <span id="id">@{{ config.extra.handle }}</span>
           {% endif %}
         </div>
-        {% if section.extra.bio %}
-        <div id="bio"> {{ section.extra.bio }} </div>
+        {% if config.extra.bio %}
+        <div id="bio"> {{ config.extra.bio }} </div>
         {% endif %}
       </div>
     </section>
     <section id="links">
       <div id="left">
-        {% for section in config.extra.sections %}
-        <a {% if section.is_external %}href="{{ section.path }}" target="_blank" rel='noreferrer noopener'{% else %}href="{{ get_url(path=section.path) }}" class="instant"{% endif %}>{{ section.name }}</a>
+        {% for item in config.extra.nav %}
+        {% if item.path is starting_with(pat="/") and item.path is not starting_with(pat="//") %}
+        <a href="{{ get_url(path=item.path) }}" class="instant">{{ item.name }}</a>
+        {% else %}
+        <a href="{{ item.path }}" class="external" target="_blank" rel='noreferrer noopener'>{{ item.name }}</a>
+        {% endif %}
         {% endfor %}
       </div>
       <div id="right">
-        {% for link in section.extra.links %}
+        {% for link in config.extra.links %}
         <a href="{{ link.url }}" aria-label="{{ link.name }}" target="_blank" rel='noreferrer noopener{% if link.rel_me%} me{% endif %}'>
           {% set icon_path = "icon/" ~ link.icon ~ ".svg" %}
           {% set icon = load_data(path=icon_path) %}

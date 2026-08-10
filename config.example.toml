@@ -40,10 +40,22 @@ anchors = "on"
 
 [extra]
 
-sections = [
-  { name = "posts", path = "/posts", is_external = false },
-  # { name = "tags", path = "/tags", is_external = false },
-  # { name = "github", path = "https://github.com/<your-username>", is_external = true },
+nav = [
+  { name = "posts", path = "/posts" },
+  # { name = "tags", path = "/tags" },
+  # { name = "github", path = "https://github.com/<your-username>" },
+]
+
+# Your info on the home page, if you don't want to display handle/bio/avatar, simply comment out that line
+name = "Jhon Wick"
+handle = "jhonwick"
+bio = "dog person, killer"
+avatar = "img/avatar.webp"
+links = [
+  { name = "GitHub", icon = "github", url = "https://github.com/<your-username>" },
+  { name = "Email", icon = "email", url = "mailto:<your-email-address>" },
+  { name = "Twitter", icon = "twitter", url = "https://twitter.com/<your-username>" },
+  { name = "Mastodon", icon = "mastodon", url = "https://mastodon.social/<your-username>", rel_me = true },
 ]
 blog_section_path = "/posts" # Path of the main blog section, used by home page's recent posts and tags pages
 

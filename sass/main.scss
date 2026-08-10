@@ -1129,6 +1129,10 @@ body.homepage {
       a {
         border-bottom: 1.5px solid var(--primary-color);
         line-height: 1.5;
+
+        &.external {
+          cursor: ne-resize;
+        }
       }
     }
 

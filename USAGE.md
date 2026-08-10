@@ -17,7 +17,7 @@ Copy the content of `myblog/themes/serene/config.example.toml` to `myblog/config
 
 ## Sections and Pages
 
-There is a `sections` config option in your `config.toml`, which enumerates the sections your site has. You should have at least one `blog` section.
+There is a `nav` config option in your `config.toml`, which enumerates the navigation entries of the home page. An entry whose `path` starts with `/` links to a section of your site, any other path (e.g. an `https://` URL) is treated as an external link and opens in a new tab. You should have at least one `blog` section.
 
 The name and path can be changed, be noticed that if you changed the blog section path (e.g. from `/posts` to `/blog`), then you should also change `blog_section_path` option.
 
@@ -32,18 +32,6 @@ lang = 'en'
 
 # Show footer in home page
 footer = false
-
-# If you don't want to display handle/bio/avatar, simply comment out that line
-name = "Jhon Wick"
-handle = "jhonwick"
-bio = "dog person, killer"
-avatar = "img/avatar.webp"
-links = [
-    { name = "GitHub", icon = "github", url = "https://github.com/<your-username>" },
-    { name = "Email", icon = "email", url = "mailto:<your-email-address>" },
-    { name = "Twitter", icon = "twitter", url = "https://twitter.com/<your-username>" },
-    { name = "Mastodon", icon = "mastodon", url = "https://mastodon.social/<your-username>", rel_me = true },
-]
 
 # Show a few recent posts in home page
 recent = false
@@ -79,7 +67,7 @@ back_to_top = true # show back-to-top button
 
 Display options like `toc` / `code_copy` / `comment` / `date_format` have site-wide defaults in `config.toml`, you can override them here for this section (e.g. `toc = false`), see [Front Matter](#front-matter) for details.
 
-Blog section is defined by `posts.html` and `post.html`. Serene also has a special template called `prose.html`, it applies the same styles of blog post page. You can use it as a section template for a custom section page, for example if you want a separate `about` page, you can add a `{ name = "about", path = "/about", is_external = false }` to the `sections` and create a `myblog/content/about/_index.md`:
+Blog section is defined by `posts.html` and `post.html`. Serene also has a special template called `prose.html`, it applies the same styles of blog post page. You can use it as a section template for a custom section page, for example if you want a separate `about` page, you can add a `{ name = "about", path = "/about" }` to the `nav` and create a `myblog/content/about/_index.md`:
 
 ```
 +++
@@ -102,7 +90,7 @@ The default date format is "%b %-d, %Y", e.g. "Dec 13, 2025", check [this page](
 
 ### Multiple list sections
 
-You can have more than one blog-like list section, e.g. a `series` section alongside `posts`. Just create `myblog/content/series/_index.md` the same way as the blog section (with `template = "posts.html"` and `page_template = "post.html"`), and add it to `sections` in `config.toml`. Each list section has its own options in `[extra]` (`date_format`, `toc`, `categorized`, etc.), and can have its own feed by setting `generate_feeds = true` in its `_index.md` (available at e.g. `/series/feed.xml`).
+You can have more than one blog-like list section, e.g. a `series` section alongside `posts`. Just create `myblog/content/series/_index.md` the same way as the blog section (with `template = "posts.html"` and `page_template = "post.html"`), and add it to `nav` in `config.toml`. Each list section has its own options in `[extra]` (`date_format`, `toc`, `categorized`, etc.), and can have its own feed by setting `generate_feeds = true` in its `_index.md` (available at e.g. `/series/feed.xml`).
 
 The `blog_section_path` option in `config.toml` points to your *main* blog section, it is used by the recent posts list of the home page and by the tags pages (tags are site-wide: posts from all list sections that share a tag will be listed together).
 
@@ -140,7 +128,7 @@ Create a new directory `img` under `myblog/static`, put favicon related files he
 
 ## Icon
 
-The default icons are placed in `myblog/themes/serene/static/icon`, the `icon` value in `links` of home section is the file name of the svg file.
+The default icons are placed in `myblog/themes/serene/static/icon`, the `icon` value in `links` of `config.toml` is the file name of the svg file.
 
 To customize, find the svg file you want, modify (in case you don't kown, a svg file is just a plian text file) its width and height to `18`, and the color to `currentColor`:
 
@@ -514,12 +502,12 @@ For example, to create a "projects" section page:
     {{ <collection file="projects.toml" section /> }}
     ```
 
-3. Add projects section in `sections` of `config.toml`
+3. Add projects section in `nav` of `config.toml`
 
     ```toml
-    sections = [
+    nav = [
       # ...
-      { name = "projects", path = "/projects", is_external = false },
+      { name = "projects", path = "/projects" },
     ]
     ```
 
