@@ -303,6 +303,25 @@ Giscus also support a reaction feature, but it requires visitors to log in to Gi
 
 Zola supports some [annotations for code blocks](https://www.getzola.org/documentation/content/syntax-highlighting/#annotations).
 
+## Callouts
+
+Callouts use the [GitHub alert syntax](https://github.com/orgs/community/discussions/16925), there are 5 types: `NOTE` `TIP` `IMPORTANT` `WARNING` `CAUTION`:
+
+```md
+> [!NOTE]
+> note text
+```
+
+Serene styles them with an icon and a title. The title texts default to "Note" / "Tip" / "Important" / "Warning" / "Caution", you can change them (e.g. for a non-English site) by setting css variables in your `_custom_css.html`:
+
+```css
+--callout-note-title: "注意";
+--callout-tip-title: "提示";
+--callout-important-title: "重要";
+--callout-warning-title: "警告";
+--callout-caution-title: "当心";
+```
+
 ## Components
 
 Since zola `0.23`, your markdown content is itself a [Tera](https://keats.github.io/tera/) template, and shortcodes were replaced by [Tera components](https://www.getzola.org/documentation/content/overview/#templating-your-content). Serene provides some built-in components.
@@ -340,18 +359,6 @@ Note that component arguments other than strings are wrapped in `{...}`, e.g. `a
   // content...
   {% </detail> %}
   ```
-
-- As you can see in [this page](https://serene-demo.pages.dev/posts/callouts) of the demo site, callouts are special blockquote blocks, just like [github's](https://github.com/orgs/community/discussions/16925). There are currently 5 types: `note` `tip` `important` `warning`  `caution`.
-
-   `title` is optional:
-
-  ```md
-  {% <note title="Note"> %}
-  note text
-  {% </note> %}
-  ```
-
-  [Github callout/alert syntax](https://github.com/orgs/community/discussions/16925) is also supported by zola natively (however it doesn't display icon and title).
 
 - Use `mermaid` to add a mermaid chart:
 

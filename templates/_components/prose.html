@@ -14,46 +14,6 @@
 {% endcomponent back_link %}
 
 
-{% component callout(name: string, title: string = "") -%}
-{%- set icon = load_data(path="icon/" ~ name ~ ".svg") -%}
-<blockquote class="callout {{ name }} {% if title %}has-title{% else %}no-title{% endif %}">
-{%- if title -%}
-<p class="title"><span class="icon">{{ icon | trim | safe }}</span><strong>{{ title }}</strong></p>
-{%- else -%}
-<div class="icon">{{ icon | trim | safe }}</div>
-{%- endif -%}
-<div class="content">
-{{ body | markdown | trim | safe }}
-</div>
-</blockquote>
-{%- endcomponent callout %}
-
-
-{% component note(title: string = "") -%}
-{% <callout name="note" title={title}> %}{{ body | safe }}{% </callout> %}
-{%- endcomponent note %}
-
-
-{% component tip(title: string = "") -%}
-{% <callout name="tip" title={title}> %}{{ body | safe }}{% </callout> %}
-{%- endcomponent tip %}
-
-
-{% component important(title: string = "") -%}
-{% <callout name="important" title={title}> %}{{ body | safe }}{% </callout> %}
-{%- endcomponent important %}
-
-
-{% component warning(title: string = "") -%}
-{% <callout name="warning" title={title}> %}{{ body | safe }}{% </callout> %}
-{%- endcomponent warning %}
-
-
-{% component caution(title: string = "") -%}
-{% <callout name="caution" title={title}> %}{{ body | safe }}{% </callout> %}
-{%- endcomponent caution %}
-
-
 {% component quote(cite: string = "") -%}
 {%- set icon = load_data(path="icon/quote.svg") -%}
 <blockquote class="quote">

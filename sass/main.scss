@@ -140,29 +140,107 @@ a:focus-visible {
       margin: 1em 0;
     }
 
+    &[class*="markdown-alert-"] {
+      margin: 1.5em 0;
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      column-gap: 0.5em;
+
+      &::before {
+        // the icon, colored via mask so it follows currentColor
+        content: "";
+        grid-row: 1;
+        grid-column: 1;
+        align-self: center;
+        width: 18px;
+        height: 18px;
+        background-color: currentColor;
+        mask-repeat: no-repeat;
+        mask-position: center;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        -webkit-mask-size: contain;
+      }
+
+      &::after {
+        // the title
+        grid-row: 1;
+        grid-column: 2;
+        align-self: center;
+        font-weight: 600;
+      }
+
+      > * {
+        grid-column: 1 / -1;
+      }
+
+      > p:first-of-type {
+        margin-top: 0.5em;
+      }
+      > p:last-of-type {
+        margin-bottom: 0;
+      }
+    }
+
     &.markdown-alert-note {
       color: var(--callout-note-color);
       border-color: var(--callout-note-color);
+      &::before {
+        mask-image: url("icon/note.svg");
+        -webkit-mask-image: url("icon/note.svg");
+      }
+      &::after {
+        content: var(--callout-note-title, "Note");
+      }
     }
 
     &.markdown-alert-tip {
       color: var(--callout-tip-color);
       border-color: var(--callout-tip-color);
+      &::before {
+        mask-image: url("icon/tip.svg");
+        -webkit-mask-image: url("icon/tip.svg");
+      }
+      &::after {
+        content: var(--callout-tip-title, "Tip");
+      }
     }
 
     &.markdown-alert-important {
       color: var(--callout-important-color);
       border-color: var(--callout-important-color);
+      &::before {
+        mask-image: url("icon/important.svg");
+        -webkit-mask-image: url("icon/important.svg");
+      }
+      &::after {
+        content: var(--callout-important-title, "Important");
+      }
     }
 
     &.markdown-alert-warning {
       color: var(--callout-warning-color);
       border-color: var(--callout-warning-color);
+      &::before {
+        mask-image: url("icon/warning.svg");
+        -webkit-mask-image: url("icon/warning.svg");
+      }
+      &::after {
+        content: var(--callout-warning-title, "Warning");
+      }
     }
 
     &.markdown-alert-caution {
       color: var(--callout-caution-color);
       border-color: var(--callout-caution-color);
+      &::before {
+        mask-image: url("icon/caution.svg");
+        -webkit-mask-image: url("icon/caution.svg");
+      }
+      &::after {
+        content: var(--callout-caution-title, "Caution");
+      }
     }
   }
 
@@ -333,69 +411,6 @@ a:focus-visible {
         cursor: pointer;
         text-decoration: underline;
       }
-    }
-  }
-
-  .callout {
-    margin: 1.5em 0;
-
-    .icon {
-      height: 1.75em;
-      display: flex;
-      align-items: center;
-    }
-
-    p {
-      margin: 0;
-      + p {
-        margin: 1em 0;
-      }
-    }
-
-    &.has-title {
-      padding-left: 1em;
-      .title {
-        display: flex;
-        align-items: center;
-        gap: 0.5em;
-        margin-bottom: 0.5em;
-      }
-    }
-
-    &.no-title {
-      padding-left: 0;
-      border: none;
-      display: flex;
-      align-items: start;
-      gap: 0.75em;
-      .content {
-        max-width: calc(100% - 30px);
-      }
-    }
-
-    &.note {
-      color: var(--callout-note-color);
-      border-color: var(--callout-note-color);
-    }
-
-    &.tip {
-      color: var(--callout-tip-color);
-      border-color: var(--callout-tip-color);
-    }
-
-    &.important {
-      color: var(--callout-important-color);
-      border-color: var(--callout-important-color);
-    }
-
-    &.warning {
-      color: var(--callout-warning-color);
-      border-color: var(--callout-warning-color);
-    }
-
-    &.caution {
-      color: var(--callout-caution-color);
-      border-color: var(--callout-caution-color);
     }
   }
 
@@ -1406,7 +1421,6 @@ body.post {
     }
 
     #outdate_alert {
-      font-style: italic;
       &.hidden {
         display: none;
       }

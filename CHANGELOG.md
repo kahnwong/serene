@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 - refactor: the `sections` config option is renamed to `nav`, and its `is_external` field is removed — a `path` starting with `/` is an internal link, anything else (e.g. an `https://` URL) is treated as an external link automatically; external nav links now show a `ne-resize` cursor
 - refactor: `name` / `handle` / `bio` / `avatar` / `links` of the home page are moved from the home section's `_index.md` to `[extra]` of `zola.toml`
 - refactor: the example config file is renamed from `config.example.toml` to `zola.toml.example`, following zola v0.23's new default config file name `zola.toml` (the old `config.toml` name still works)
+- refactor: the callout components (`note` / `tip` / `important` / `warning` / `caution`) are removed in favor of zola's native [GitHub alert syntax](https://github.com/orgs/community/discussions/16925) (`> [!NOTE]`), styled with icon and title by the theme; the title texts can be customized via css variables (`--callout-note-title`, etc.)
 
 ### Migrate from zola v0.22
 
@@ -20,9 +21,24 @@ Zola v0.23 removed shortcodes and Tera macros in favor of [Tera components](http
 
 - Shortcode calls in your markdown must be rewritten in component syntax. Arguments other than strings are wrapped in `{...}`:
   - `{{ figure(src="...", width="600") }}` → `{{ <figure src="..." width="600" /> }}`
-  - `{% note(title="Note") %} ... {% end %}` → `{% <note title="Note"> %} ... {% </note> %}`
+  - `{% quote(cite="...") %} ... {% end %}` → `{% <quote cite="..."> %} ... {% </quote> %}`
   - `{{ youtube(id="...", autoplay=true) }}` → `{{ <youtube id="..." autoplay={true} /> }}`
   - `{{ collection(file="projects.toml") }}` → `{{ <collection file="projects.toml" section /> }}` (note the extra `section`)
+- The callout shortcodes are removed, rewrite them with the GitHub alert syntax (custom titles are not supported, the title is always the type name):
+
+  ```md
+  {% note(title="Note") %}
+  note text
+  {% end %}
+  ```
+
+  becomes:
+
+  ```md
+  > [!NOTE]
+  > note text
+  ```
+
 - For `figure` with a colocated image, pass the page context: `{{ <figure src="img.png" page /> }}` (or `section` instead of `page` when used in a section's `_index.md`)
 - `width` / `height` of `figure` must be strings: `width="600"`, not `width=600`
 - Literal `{{` or `{%` in your content (e.g. code blocks showing template syntax, GitHub Actions `${{ ... }}`) must be wrapped with `{% raw %}` ... `{% endraw %}`, otherwise zola will try to interpret them as Tera syntax. For files full of such content, you can instead list them in the `skip_content_templating` config option (glob patterns) to opt them out of templating entirely (components won't work in those files)

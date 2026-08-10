@@ -125,7 +125,7 @@
         {% if show_outdated_alert -%}
         {% set outdated_alert_text_before = section.extra.outdated_alert_text_before if section.extra.outdated_alert_text_before is defined else (config.extra.outdated_alert_text_before if config.extra.outdated_alert_text_before is defined else "") %}
         {% set outdated_alert_text_after = section.extra.outdated_alert_text_after if section.extra.outdated_alert_text_after is defined else (config.extra.outdated_alert_text_after if config.extra.outdated_alert_text_after is defined else "") %}
-        <blockquote id="outdate_alert" class="callout caution hidden" data-days="{{ outdated_alert_days }}"
+        <blockquote id="outdate_alert" class="markdown-alert-caution hidden" data-days="{{ outdated_alert_days }}"
           data-alert-text-before="{{ outdated_alert_text_before }}"
           data-alert-text-after="{{ outdated_alert_text_after }}">
           <div class="content"></div>
