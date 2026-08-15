@@ -1,8 +1,10 @@
-.zed/settings.json
+.zed/
+.claude/
 
 public/
 content/
 static/img/
+static/assets/
 zola.toml
 
 .DS_Store

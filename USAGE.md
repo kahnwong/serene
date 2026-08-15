@@ -19,7 +19,7 @@ Copy the content of `myblog/themes/serene/zola.toml.example` to `myblog/zola.tom
 
 There is a `nav` config option in your `zola.toml`, which enumerates the navigation entries of the home page. An entry whose `path` starts with `/` links to a section of your site, any other path (e.g. an `https://` URL) is treated as an external link and opens in a new tab. You should have at least one `blog` section.
 
-The name and path can be changed, be noticed that if you changed the blog section path (e.g. from `/posts` to `/blog`), then you should also change `blog_section_path` option.
+The name and path can be changed, note that if you changed the blog section path (e.g. from `/posts` to `/blog`), then you should also change `blog_section_path` option.
 
 For home page, create `myblog/content/_index.md`:
 
@@ -130,7 +130,7 @@ Create a new directory `img` under `myblog/static`, put favicon related files he
 
 The default icons are placed in `myblog/themes/serene/static/icon`, the `icon` value in `links` of `zola.toml` is the file name of the svg file.
 
-To customize, find the svg file you want, modify (in case you don't kown, a svg file is just a plian text file) its width and height to `18`, and the color to `currentColor`:
+To customize, find the svg file you want, modify (in case you don't know, a svg file is just a plain text file) its width and height to `18`, and the color to `currentColor`:
 
 `... width="18" height="18" ... fill="currentColor" ...`
 
@@ -171,9 +171,9 @@ To add scripts for analytics tools (such as Google Analytics, Umami, etc.), you 
 
 Copy `myblog/themes/serene/templates/_custom_css.html` to `myblog/templates/_custom_css.html`, variables in this file are used to control styles, such as the theme color `--primary-color`, modify them as you want.
 
-If you want to customize more, you need to copy that file under the `templates`, `static`, `sass` directory in the corresponding `themes/serene` to the same name directory of `myblog`, and modify it. Be careful not to directly modify the files under the serene directory, because these modifications may cause conflicts if the theme is updated.
+If you want to customize more, copy the file you want to change from `themes/serene`'s `templates` / `static` / `sass` directory to the same-named directory of `myblog`, and modify it there. Be careful not to directly modify the files under the serene directory, because these modifications may cause conflicts if the theme is updated.
 
-If you want to use a custom font, create a new `myblog/templates/_custom_font.html` and put the font link tags (for example, from [google fonts](https://fonts.google.com/)) into it, and then modify `--main-font` or `--code-font` in `myblog/sass/templates/_custom_css.html`. For performance reasons, you may want to self-host font files, but it's optional:
+If you want to use a custom font, create a new `myblog/templates/_custom_font.html` and put the font link tags (for example, from [google fonts](https://fonts.google.com/)) into it, and then modify `--main-font` or `--code-font` in `myblog/templates/_custom_css.html`. For performance reasons, you may want to self-host font files, but it's optional:
 
 1. Open [google-webfonts-helper](https://gwfh.mranftl.com) and choose your font.
 2. Modify `Customize folder prefix` of step 3 to `/font/` and then copy the css.
@@ -215,11 +215,11 @@ new post about something...
 
 Display options follow a unified fallback chain: **post front-matter → the post's section `_index.md` → `[extra]` of `zola.toml`**, the closest one wins. This applies to `toc`, `code_copy`, `comment`, `math`, `mermaid`, `reaction`, `outdated_alert` and `outdated_alert_days` (`date_format` and `outdated_alert_text_before/after` follow a section → config chain). So you can set site-wide defaults in `zola.toml`, override them per section, and override again per post.
 
-If you set `categorized = true`, posts will be sorted alphabetically by default, you can manually set the order by adding a prefix  `__[0-9]{2}__` in front of the category name, for example, `categories = ["__01__CatXXX"]`
+If you set `categorized = true`, posts are grouped by category, and categories are sorted alphabetically by default, you can manually set the order by adding a prefix  `__[0-9]{2}__` in front of the category name, for example, `categories = ["__01__CatXXX"]`
 
 ## Table of Contents
 
-Set `toc = true` to display of table-of-contents.
+Set `toc = true` to display the table-of-contents.
 
 ## Math & Chart
 
@@ -288,7 +288,7 @@ You need to setup a backend api endpoint to enable it. Your endpoint should hand
     }
     ```
 
-For conivence, you can use one template repo to setup your own endpoint:
+For convenience, you can use one template repo to setup your own endpoint:
 
 -  [isunjn/reaction](https://github.com/isunjn/reaction): All you need is a [Cloudflare](https://cloudflare.com) account. The free tier is good enough for a low-traffic personal blog.
 
@@ -342,7 +342,7 @@ Note that component arguments other than strings are wrapped in `{...}`, e.g. `a
 
   The caption is parsed as markdown so you can use bold / italic / link, for example `caption="[via](https://example.com)"`
 
-  Adding height to an image is always recommended, as this can avoid page layout shift. When you use `[](https://exmaple.com/img.png)`, browser cannot determine the image's dimensions before it loads.
+  Adding height to an image is always recommended, as this can avoid page layout shift. When you use `![](https://example.com/img.png)`, browser cannot determine the image's dimensions before it loads.
 
 - Use `quote` to display a special quote block, `cite` is optional:
 
@@ -384,113 +384,75 @@ Note that component calls must be at the top level of your content — don't nes
 
 ## Collection
 
-This theme has a special component for creating a collection of items. These collections can be used to showcase various types of your list, such as projects, publications, blogroll, bookmarks, etc. Check [this page](http://serene-demo.pages.dev/collections) on demo site to see some examples.
+This theme has a special component for creating a collection of items. Collections can be used to showcase various types of lists, such as projects, publications, blogroll, bookmarks, books, etc. Check [this page](https://serene-demo.pages.dev/collections) on demo site to see some examples.
 
-Currently, there are 7 types of collection item:
+A collection is described by a toml file. Two collection-level options decide how it looks:
 
-- `card`
+- `layout`: the appearance of each item
+  - `card`: rich block item, with title / subtitle / content / tags etc.
+  - `row`: compact one-line item
+  - `tile`: small bordered block, text on the left and a 48x48 image on the right
+  - `gallery`: item with a poster image
+- `flow`: how items are arranged in the container
+  - `stack`: vertically stacked, one item per line (default for `card` and `gallery`); a stacked `row` takes the full width with its `badge` aligned to the right
+  - `inline`: items take their content width and wrap horizontally (default for `row` and `tile`)
+  - `grid`: an even grid, the number of columns adapts to the available width automatically
 
-    ```toml
-    [[collection]]
-    type = "card"
-    title = "Title"
-    subtitle = "Subtitle" # optional; supports Markdown
-    date = "Date" # optional
-    link = "https://example.com" # optional
-    icon = "https://example.com/image.png" # optional
-    content = "Content" # supports Markdown
-    tags = ["tag1", "tag2"] # optional
-    featured = false  # optional
-    ```
+Not every combination makes sense: `card` doesn't work with `flow = "inline"` (it is treated as `grid`), and an unknown `layout` / `flow` value falls back to the default.
 
-- `card_simple`
+All layouts share the same set of item fields, every field except `title` is optional and simply omitted from rendering when absent. Each layout renders the fields that fit its density and ignores the rest:
 
-    ```toml
-    [[collection]]
-    type = "card_simple"
-    title = "Title"
-    date = "Date" # optional
-    link = "https://example.com" # optional
-    icon = "https://example.com/image.png" # optional
-    content = "Content" # supports Markdown
-    featured = false  # optional
-    ```
+| field      | card         | row  | tile      | gallery  |
+| ---------- | ------------ | ---- | --------- | -------- |
+| `title`    | ✓            | ✓    | ✓         | ✓        |
+| `subtitle` | ✓            | ✓    | ✓         | ✓        |
+| `content`  | ✓            | -    | -         | ✓        |
+| `icon`     | ✓            | ✓    | -         | -        |
+| `image`    | ✓ (left)     | -    | ✓ (48x48) | ✓ (poster) |
+| `link`     | title        | title | whole item | title   |
+| `badge`    | ✓ (right)    | ✓    | -         | ✓ (bottom) |
+| `tags`     | ✓            | -    | -         | -        |
+| `featured` | ✓            | ✓    | -         | -        |
+| `rotate`   | -            | -    | ✓         | -        |
 
-- `entry`
+```toml
+layout = "card"    # "card" | "row" | "tile" | "gallery"
+# flow = "grid"    # "stack" | "inline" | "grid"
 
-    ```toml
-    [[collection]]
-    type = "entry"
-    title = "Title" # optional
-    subtitle = "Subtitle" # optional
-    link = "https://example.com" # optional
-    icon = "https://example.com/image.png" # optional
-    ```
+[[item]]
+title = "Title"
+subtitle = "Subtitle"            # supports inline markdown
+content = "Content"              # supports markdown
+icon = "https://example.com/icon.png"    # a small 16x16 icon shown before the title (card and row layouts)
+image = "https://example.com/image.png"  # a picture: shown on the left for card, as the 48x48 block for tile, as the poster for gallery
+link = "https://example.com"     # makes the title clickable (or the whole item for tile), external links open in a new tab automatically
+# `icon` and `image` can be a full URL, a path in `static` (starting with `/`), or a file colocated with the section
+badge = "2025"                   # a short mark rendered as-is: a year, a date range, a rating, a status...
+tags = ["tag1", "tag2"]
+featured = true                  # show an asterisk mark (card and row layouts)
+rotate = true                    # playfully rotate the image (tile layout)
+```
 
-- `box`
-
-    ```toml
-    [[collection]]
-    type = "box"
-    title = "Title"
-    subtitle = "Subtitle" # optional
-    link = "https://example.com" # optional
-    img = "https://example.com/image.png" # optional
-    ```
-
-- `art`
-
-    ```toml
-    [[collection]]
-    type = "art"
-    title = "Title"
-    subtitle = "Subtitle" # optional; support Markdown
-    link = "https://example.com" # optional
-    img = "https://example.com/image.png"
-    content = "Content" # optional; supports Markdown
-    footer = "Footer" # optional; supports Markdown
-    ```
-
-- `art_simple`
-
-    ```toml
-    [[collection]]
-    type = "art_simple"
-    title = "Title"
-    subtitle = "Subtitle" # optional; supports Markdown
-    link = "https://example.com" # optional
-    img = "https://example.com/image.png"
-    ```
-
-
-List your items in a toml file and then use the `collection` component to render them.
+Note that `gallery` changes its look with the flow: `stack` puts the poster on the left with text on the right, while `grid` / `inline` puts the poster on top with text centered below.
 
 For example, to create a "projects" section page:
 
 1. Create `myblog/content/projects/projects.toml`:
 
     ```toml
-    [[collection]]
-    type = "card"
+    layout = "card"
+
+    [[item]]
     title = "Tokio"
     link = "https://example.com"
-    content = "Tokio is an asynchronous runtime for the Rust programming language. It provides the building blocks needed for writing network applications. It gives the flexibility to target a wide range of systems, from large servers with dozens of cores to small embedded devices."
+    content = "Tokio is an asynchronous runtime for the Rust programming language."
     tags = ["rust", "async", "runtime"]
 
-    [[collection]]
-    type = "card"
+    [[item]]
     title = "Kubernetes"
     link = "https://example.com"
-    content = "Kubernetes, also known as K8s, is an open source system for managing containerized applications across multiple hosts. It provides basic mechanisms for the deployment, maintenance, and scaling of applications."
+    content = "Kubernetes, also known as K8s, is an open source system for managing containerized applications."
     tags = ["k8s", "golang"]
-
-    [[collection]]
-    type = "card"
-    title = "Next.js"
-    link = "https://example.com"
-    content = "Next.js is a React framework for building full-stack web applications. You use React Components to build user interfaces, and Next.js for additional features and optimizations."
-    tags = ["typescript", "react", "frontend"]
-
     ```
 
 2. Create `myblog/content/projects/_index.md`:
@@ -517,6 +479,8 @@ For example, to create a "projects" section page:
       { name = "projects", path = "/projects" },
     ]
     ```
+
+A page can have multiple collections: put several toml files in the section directory and call the component for each, with markdown headings in between to group them.
 
 ## Build & Deploy
 

@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - refactor: `name` / `handle` / `bio` / `avatar` / `links` of the home page are moved from the home section's `_index.md` to `[extra]` of `zola.toml`
 - refactor: the example config file is renamed from `config.example.toml` to `zola.toml.example`, following zola v0.23's new default config file name `zola.toml` (the old `config.toml` name still works)
 - refactor: the callout components (`note` / `tip` / `important` / `warning` / `caution`) are removed in favor of zola's native [GitHub alert syntax](https://github.com/orgs/community/discussions/16925) (`> [!NOTE]`), styled with icon and title by the theme; the title texts can be customized via css variables (`--callout-note-title`, etc.)
+- feat: collections are redesigned — item appearance (`layout = "card" | "row" | "tile" | "gallery"`) and arrangement (`flow = "stack" | "inline" | "grid"`, the grid adapts its column count to the available width) are now declared at the collection level, and all layouts share one unified set of item fields (`title` / `subtitle` / `content` / `icon` / `image` / `link` / `badge` / `tags` / `featured`) with graceful degradation; item `link`s are auto-detected as internal or external, and `image` supports section-colocated files; `card` items can additionally show a picture on the left via `image` (the small `icon` before the title is a separate field)
 
 ### Migrate from zola v0.22
 
@@ -55,6 +56,10 @@ Zola v0.23 removed shortcodes and Tera macros in favor of [Tera components](http
   - `id` in the home section's `_index.md` → `handle`
   - `sections` in `zola.toml` → `nav`, and remove the `is_external` field from its entries (external links are now detected automatically from the `path`)
   - `name` / `handle` / `bio` / `avatar` / `links` move from the home section's `_index.md` to `[extra]` of `zola.toml`
+- Collection toml files use a new schema, update them as follows:
+  - each `[[collection]]` becomes `[[item]]`, and the per-item `type` moves to a single collection-level `layout` at the top of the file: `card` → `layout = "card"`, `card_simple` → `layout = "row"` plus `flow = "stack"` (rename its `content` to `subtitle`), `entry` → `layout = "row"`, `box` → `layout = "tile"`, `art` → `layout = "gallery"`, `art_simple` → `layout = "gallery"` plus `flow = "grid"`
+  - rename item fields: `img` → `image` (`icon` keeps its name), and both `date` and `footer` → `badge` (a short mark rendered as-is: a year, a date range, a rating, a status...)
+  - remove `type = "br"` items — arrangement is now controlled by the collection-level `flow` (`"stack"` / `"inline"` / `"grid"`) option
 
 ## [5.7.0] - 2026-08-09
 
