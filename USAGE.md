@@ -1,6 +1,6 @@
 This is the detailed guide on how to use zola-theme-serene. You should also check zola's [documentation](https://www.getzola.org/documentation/getting-started/overview/).
 
-Serene requires zola `0.23.2` or later.
+Serene requires zola `0.23.4` or later.
 
 ## Installation
 

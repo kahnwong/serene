@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-- feat: migrate to zola v0.23 / Tera v2, the minimum zola version required is now `v0.23.2`, shortcodes are rewritten as Tera components
+- feat: migrate to zola v0.23 / Tera v2, the minimum zola version required is now `v0.23.4`, shortcodes are rewritten as Tera components
 - feat: tag links are now generated via zola's taxonomy API instead of hardcoded `/tags/` paths, so the `taxonomy_root` config option (e.g. `taxonomy_root = "blog"` for `/blog/tags/xxx` URLs) is respected
 - feat: support multiple blog-like list sections — post pages now read config from their own parent section instead of the `blog_section_path` one, and each list section can have its own feed (`generate_feeds = true` in its `_index.md`); `blog_section_path` now only designates the main section used by the home page's recent posts and the tags pages
 - refactor: `blog.html` template is renamed to `posts.html`, change `template = "blog.html"` to `template = "posts.html"` in your blog section's `_index.md`

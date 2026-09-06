@@ -2,7 +2,7 @@ name = "serene"
 description = "A minimal blog theme for zola, well crafted"
 license = "MIT"
 homepage = "https://github.com/isunjn/serene"
-min_version = "0.23.2"
+min_version = "0.23.4"
 demo = "https://serene-demo.pages.dev"
 
 [author]
