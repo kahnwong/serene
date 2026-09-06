@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - refactor: the example config file is renamed from `config.example.toml` to `zola.toml.example`, following zola v0.23's new default config file name `zola.toml` (the old `config.toml` name still works)
 - refactor: the callout components (`note` / `tip` / `important` / `warning` / `caution`) are removed in favor of zola's native [GitHub alert syntax](https://github.com/orgs/community/discussions/16925) (`> [!NOTE]`), styled with icon and title by the theme; the title texts can be customized via css variables (`--callout-note-title`, etc.)
 - feat: collections are redesigned — item appearance (`layout = "card" | "row" | "tile" | "gallery"`) and arrangement (`flow = "stack" | "inline" | "grid"`, the grid adapts its column count to the available width) are now declared at the collection level, and all layouts share one unified set of item fields (`title` / `subtitle` / `content` / `icon` / `image` / `link` / `badge` / `tags` / `featured`) with graceful degradation; item `link`s are auto-detected as internal or external, and `image` supports section-colocated files; `card` items can additionally show a picture on the left via `image` (the small `icon` before the title is a separate field)
+- chore: upgrade Mermaid to 11.17.2 and KaTeX to 0.18.6, refreshing KaTeX resource integrity hashes
 
 ### Migrate from zola v0.22
 
