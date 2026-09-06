@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [6.0.0] - 2026-09-06
 
 - feat: migrate to zola v0.23 / Tera v2, the minimum zola version required is now `v0.23.4`, shortcodes are rewritten as Tera components
 - feat: tag links are now generated via zola's taxonomy API instead of hardcoded `/tags/` paths, so the `taxonomy_root` config option (e.g. `taxonomy_root = "blog"` for `/blog/tags/xxx` URLs) is respected
@@ -467,6 +467,8 @@ The new generated css files for code highlighting will be `giallo-light.css` and
 
 First release 🎉
 
+[6.0.0]: https://github.com/isunjn/serene/compare/v5.7.0...v6.0.0
+[5.7.0]: https://github.com/isunjn/serene/compare/v5.6.3...v5.7.0
 [5.6.3]: https://github.com/isunjn/serene/compare/v5.6.2...v5.6.3
 [5.6.2]: https://github.com/isunjn/serene/compare/v5.6.1...v5.6.2
 [5.6.1]: https://github.com/isunjn/serene/compare/v5.6.0...v5.6.1
