@@ -19,9 +19,9 @@
     {% elif config.generate_feeds %}
       {% set_global rss_path = "/" ~ config.feed_filenames.0 %}
     {% endif %}
-    {% if section.generate_feeds or config.generate_feeds %}
+    <!--{% if section.generate_feeds or config.generate_feeds %}
     <a id="rss-btn" href="{{ get_url(path=rss_path) }}">RSS</a>
-    {% endif %}
+    {% endif %}-->
     {% endif %}
 
     {% if not config.extra.force_theme %}
