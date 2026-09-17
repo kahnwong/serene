@@ -18,9 +18,10 @@
   </div>
 
   <div class="right">
-    {% if show_rss %}
-    <a id="rss-btn" href="{{ get_url(path=rss_path) }}">RSS</a>
-    {% endif %}
+{#  disabled by me#}
+{#    {% if show_rss %}#}
+{#    <a id="rss-btn" href="{{ get_url(path=rss_path) }}">RSS</a>#}
+{#    {% endif %}#}
 
     {% if color_scheme == "auto" %}
     {% set moon_icon = load_data(path="icon/moon.svg") %}
