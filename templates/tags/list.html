@@ -19,6 +19,10 @@
       lang={og_lang} /> }}
 {% endblock desc %}
 
+{% block head %}
+{{ social::card(title="Tags", desc="Tags", url=get_url(path="/tags"), slug="tags", kind="website") }}
+{% endblock head %}
+
 {% block content %}
 <div id="wrapper">
   {{ <back_link path={get_url(path="/")} config /> }}
@@ -33,3 +37,4 @@
   {% include "_footer.html" %}
 </div>
 {% endblock content %}
+

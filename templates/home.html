@@ -13,6 +13,7 @@
 {% endblock desc %}
 
 {% block head %}
+{{ social::card(title=config.title, desc=config.description, url=get_url(path="/"), slug="index", kind="website") }}
 {% if config.markdown.highlighting.style == "class" %}
   {% if color_scheme == "dark" %}
     <link id="hl" rel="stylesheet" type="text/css" href="{{ get_url(path='giallo-dark.css') }}" />
@@ -129,3 +130,4 @@
 </script>
 {% endif %}
 {% endblock script %}
+

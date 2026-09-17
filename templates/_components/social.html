@@ -1,0 +1,12 @@
+{% macro card(title, desc, url, slug, kind) %}
+{%- set card_url = get_url(path="social-cards/" ~ slug ~ ".png") -%}
+<meta property="og:type" content="{{ kind }}">
+<meta property="og:title" content="{{ title }}">
+<meta property="og:description" content="{{ desc }}">
+<meta property="og:url" content="{{ url }}">
+<meta property="og:image" content="{{ card_url }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ title }}">
+<meta name="twitter:description" content="{{ desc }}">
+<meta name="twitter:image" content="{{ card_url }}">
+{% endmacro card %}
