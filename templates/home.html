@@ -47,7 +47,15 @@
   <main>
     <section id="info">
       {% if config.extra.avatar %}
-      <img src="{{ get_url(path=config.extra.avatar) }}" alt="avatar">
+      <!-- h-card added by me-->
+      <div class="h-card">
+        <a class="u-url" href="https://karnwong.me/">
+          <img src="{{ get_url(path=config.extra.avatar) }}" alt="avatar">
+        </a>
+        <p hidden class="p-name">{{ config.extra.name }}</p>
+        <p hidden class="p-note">{{ section.content | striptags | trim }}</p>
+        <img class="u-photo" src="{{ get_url(path=config.extra.avatar) }}" alt="Description" hidden>
+      </div>
       {% endif %}
       <div id="text">
         <div>
